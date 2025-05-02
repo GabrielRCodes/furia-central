@@ -1,6 +1,5 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FiLogIn, FiMail } from 'react-icons/fi';
 import { useTranslations } from 'next-intl';
@@ -35,18 +34,22 @@ export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps
   const handleGoogleLogin = async () => {
     try {
       setIsLoading(true);
+      setError(null);
       
       // Verificar se o usuário pode tentar login
       const rateCheck = await checkLoginRate('google_login', 60);
       if (rateCheck.status !== 200) {
         toast.error(rateCheck.message);
+        setError(rateCheck.message);
         setIsLoading(false);
         return;
       }
       
       await signIn('google', { callbackUrl: '/' });
     } catch {
-      toast.error(t('errors.default'));
+      const errorMessage = t('errors.default');
+      toast.error(errorMessage);
+      setError(errorMessage);
       setIsLoading(false);
     }
   };
@@ -54,9 +57,12 @@ export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps
   // Função para fazer login com Email
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     
     if (!email.trim()) {
-      toast.error(t('emailRequired'));
+      const message = t('emailRequired');
+      toast.error(message);
+      setError(message);
       return;
     }
 
@@ -67,6 +73,7 @@ export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps
       const rateCheck = await checkLoginRate('email_login', 600);
       if (rateCheck.status !== 200) {
         toast.error(rateCheck.message);
+        setError(rateCheck.message);
         setIsLoading(false);
         return;
       }
@@ -82,7 +89,9 @@ export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps
       
       setIsLoading(false);
     } catch {
-      toast.error(t('errors.default'));
+      const errorMessage = t('errors.default');
+      toast.error(errorMessage);
+      setError(errorMessage);
       setIsLoading(false);
     }
   };

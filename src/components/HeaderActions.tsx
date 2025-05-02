@@ -3,7 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
-import { FiSun, FiMoon, FiGlobe, FiMessageSquare, FiSettings, FiLogOut, FiLogIn } from 'react-icons/fi';
+import { FiSun, FiMoon, FiGlobe, FiSettings, FiLogOut, FiLogIn } from 'react-icons/fi';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocale } from '@/components/Providers';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { LoginModal } from './LoginModal';
 import { VerifyRequestModal } from './VerifyRequestModal';
 
@@ -41,7 +41,6 @@ export function HeaderActions() {
   const [isVerifyRequestOpen, setIsVerifyRequestOpen] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
   const t = useTranslations('HeaderActions');
-  const pathname = usePathname();
   const router = useRouter();
 
   const handleSignOut = async () => {
