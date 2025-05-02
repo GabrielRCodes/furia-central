@@ -83,13 +83,18 @@
       "shop": "Shop",
       "fans": "Fans",
       "contact": "Contact",
-      "chat": "Chat"
+      "chat": "Chat",
+      "home": "Home",
+      "visitStore": "Visit our store"
     },
     "sidebar": {
       "title": "Menu",
       "navigation": "Navigation",
       "socialNetworks": "Social networks"
-    }
+    },
+    "influencers": "Influencers",
+    "store": "Store",
+    "contact": "Contact"
   },
   "HeaderActions": {
     "theme": {
@@ -363,5 +368,18 @@
       "cancel": "Cancel",
       "restart": "Restart conversation"
     }
+  },
+  "Timeline": {
+    "title": "Timeline",
+    "description": "Stay updated with the latest activity",
+    "reload": "Reload page",
+    "tabs": {
+      "posts": "Publications",
+      "games": "FURIA Games",
+      "community": "Community Chat",
+      "store": "Points Store"
+    },
+    "postFrom": "Post from {author}",
+    "postedOn": "Posted on {date} at {time}"
   }
 } 

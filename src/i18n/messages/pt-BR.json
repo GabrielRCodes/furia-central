@@ -51,13 +51,18 @@
       "shop": "Loja",
       "fans": "Torcida",
       "contact": "Contato",
-      "chat": "Chat"
+      "chat": "Chat",
+      "home": "Início",
+      "visitStore": "Visite nossa loja"
     },
     "sidebar": {
       "title": "Menu",
       "navigation": "Navegação",
       "socialNetworks": "Redes sociais"
-    }
+    },
+    "influencers": "Influenciadores",
+    "store": "Loja",
+    "contact": "Contato"
   },
   "HeaderActions": {
     "theme": {
@@ -331,5 +336,18 @@
       "cancel": "Cancelar",
       "restart": "Reiniciar conversa"
     }
+  },
+  "Timeline": {
+    "title": "Linha do Tempo",
+    "description": "Fique por dentro das últimas novidades",
+    "reload": "Recarregar página",
+    "tabs": {
+      "posts": "Publicações",
+      "games": "Jogos da FURIA",
+      "community": "Chat da Comunidade",
+      "store": "Loja de Pontos"
+    },
+    "postFrom": "Publicação de {author}",
+    "postedOn": "Publicado em {date} às {time}"
   }
 } 

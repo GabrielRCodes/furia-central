@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { 
-  FiMessageCircle, 
   FiGithub, 
   FiYoutube, 
   FiTwitter, 
@@ -29,6 +28,7 @@ import {
   SheetDescription
 } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator';
+import { IoGrid } from "react-icons/io5";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -44,17 +44,16 @@ export function Header() {
     <div className={`w-full border-b border-border`}>
       <div className="w-full max-w-7xl mx-auto flex justify-between items-center py-2 px-4 text-sm">
         {/* Versão Desktop - Links de navegação à esquerda */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center space-x-3">
           <Link href="/" className="flex items-center text-foreground/70 hover:text-primary transition-colors">
-            <FiMessageCircle className="h-5 w-5 stroke-[2.5px]" aria-label={t('navigation.chat')} />
+            <IoGrid className="h-5 w-5 stroke-[2.5px]" aria-label={"Furia Central"} />
           </Link>
           
           <Link 
             href="/influencers" 
             className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
-            <FiUsers className="h-4 w-4" />
-            <span>Influencers</span>
+            <span>{t('influencers')}</span>
           </Link>
           
           <a 
@@ -63,23 +62,21 @@ export function Header() {
             rel="noopener noreferrer" 
             className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
-            <FiShoppingBag className="h-4 w-4" />
-            <span>Loja</span>
+            <span>{t('store')}</span>
           </a>
           
           <Link 
             href="/contact" 
             className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
-            <FiMail className="h-4 w-4" />
-            <span>Contato</span>
+            <span>{t('contact')}</span>
           </Link>
         </nav>
 
         {/* Versão Mobile - Apenas ícone de chat à esquerda */}
         <div className="md:hidden">
           <Link href="/" className="flex items-center text-foreground/70 hover:text-primary transition-colors">
-            <FiMessageCircle className="h-5 w-5 stroke-[2.5px]" aria-label={t('navigation.chat')} />
+            <IoGrid className="h-5 w-5 stroke-[2.5px]" aria-label={t('navigation.chat')} />
           </Link>
         </div>
         
@@ -133,7 +130,7 @@ export function Header() {
                 >
                   <div className="flex items-center gap-3">
                     <FiHome className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Início</span>
+                    <span className="font-medium">{t('navigation.home', { defaultValue: 'Início' })}</span>
                   </div>
                   <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
@@ -146,7 +143,7 @@ export function Header() {
                 >
                   <div className="flex items-center gap-3">
                     <FiUsers className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Influencers</span>
+                    <span className="font-medium">{t('influencers')}</span>
                   </div>
                   <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
@@ -159,7 +156,7 @@ export function Header() {
                 >
                   <div className="flex items-center gap-3">
                     <FiMail className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Contato</span>
+                    <span className="font-medium">{t('contact')}</span>
                   </div>
                   <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
@@ -239,7 +236,7 @@ export function Header() {
                 >
                   <div className="flex items-center gap-3">
                     <FiShoppingBag className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Visite nossa loja</span>
+                    <span className="font-medium">{t('navigation.visitStore', { defaultValue: 'Visite nossa loja' })}</span>
                   </div>
                   <FiExternalLink className="h-4 w-4 text-primary" />
                 </a>
