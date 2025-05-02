@@ -1,0 +1,335 @@
+{
+  "Index": {
+    "title": "Bem-vindo ao FURIA Connect",
+    "description": "Uma plataforma moderna construída com Next.js e shadcn/ui",
+    "server": {
+      "title": "Componente Servidor",
+      "description": "Este é um componente renderizado no servidor."
+    },
+    "client": {
+      "title": "Componente Cliente",
+      "description": "Este é um componente renderizado no cliente que pode alterar o idioma da aplicação.",
+      "button": "Alternar Idioma"
+    },
+    "theme": {
+      "title": "Tema",
+      "description": "Altere entre temas claro, escuro e do sistema.",
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    },
+    "toast": {
+      "title": "Exemplos de Toast",
+      "description": "Clique nos botões abaixo para ver diferentes tipos de notificações toast.",
+      "successButton": "Sucesso",
+      "errorButton": "Erro",
+      "warningButton": "Aviso",
+      "infoButton": "Informação",
+      "customButton": "Personalizado",
+      "successMessage": "Operação bem sucedida!",
+      "successDescription": "A operação foi completada com sucesso.",
+      "errorMessage": "Ocorreu um erro!",
+      "errorDescription": "Não foi possível completar a operação.",
+      "warningMessage": "Aviso importante!",
+      "warningDescription": "Preste atenção a esta informação.",
+      "infoMessage": "Informação",
+      "infoDescription": "Aqui está uma informação útil para você.",
+      "customMessage": "Toast personalizado",
+      "customDescription": "Você pode personalizar este toast como quiser.",
+      "actionLabel": "Desfazer",
+      "footer": "Use os toasts para mostrar notificações importantes aos usuários."
+    }
+  },
+  "NavBar": {
+    "home": "Início",
+    "about": "Sobre",
+    "contact": "Contato"
+  },
+  "Header": {
+    "navigation": {
+      "about": "Sobre",
+      "shop": "Loja",
+      "fans": "Torcida",
+      "contact": "Contato",
+      "chat": "Chat"
+    },
+    "sidebar": {
+      "title": "Menu",
+      "navigation": "Navegação",
+      "socialNetworks": "Redes sociais"
+    }
+  },
+  "HeaderActions": {
+    "theme": {
+      "toggle": "Alternar tema",
+      "light": "Claro",
+      "dark": "Escuro"
+    },
+    "language": {
+      "toggle": "Alterar idioma",
+      "portuguese": "Português",
+      "english": "English"
+    },
+    "buttons": {
+      "connect": "Conectar",
+      "chat": "Chat",
+      "settings": "Configurações",
+      "disconnect": "Desconectar" 
+    },
+    "preferences": {
+      "title": "Preferências",
+      "description": "Personalize a sua experiência no FURIA Connect",
+      "account": "Conta",
+      "preferences": "Preferências",
+      "theme": "Tema",
+      "language": "Idioma"
+    }
+  },
+  "Login": {
+    "title": "Entrar no FURIA Connect",
+    "description": "Escolha um método de autenticação para acessar sua conta na plataforma",
+    "google": "Continuar com Google",
+    "socialLogin": "Login social",
+    "emailLogin": "Login por email",
+    "emailPlaceholder": "Digite seu endereço de email",
+    "emailRequired": "Email é obrigatório",
+    "continueWithEmail": "Continuar com email",
+    "or": "ou",
+    "backToHome": "Voltar para a página inicial",
+    "footer": "FURIA Connect - Conectando a comunidade FURIA",
+    "errors": {
+      "default": "Erro ao fazer login. Tente novamente.",
+      "OAuthSignin": "Erro durante o processo de autenticação.",
+      "OAuthCallback": "Erro durante a resposta de autenticação.",
+      "OAuthCreateAccount": "Erro ao criar uma conta com o provedor.",
+      "EmailCreateAccount": "Erro ao criar uma conta com e-mail.",
+      "Callback": "Erro durante o processo de callback.",
+      "OAuthAccountNotLinked": "A conta já está vinculada a outro login.",
+      "EmailSignin": "Erro ao enviar o e-mail de login.",
+      "CredentialsSignin": "Falha na autenticação. Verifique seus dados."
+    }
+  },
+  "VerifyRequest": {
+    "title": "Verificação de E-mail",
+    "description": "Um link de verificação foi enviado para o seu e-mail",
+    "checkInbox": "Por favor, verifique sua caixa de entrada e clique no link enviado para completar o processo de login.",
+    "checkSpam": "Se não encontrar o e-mail, verifique também sua pasta de spam.",
+    "expiration": "O link de verificação expirará em 1 hora.",
+    "backToLogin": "Voltar para o login",
+    "emailSentTo": "Email enviado para:"
+  },
+  "Auth": {
+    "title": "Autenticação",
+    "description": "Teste de autenticação com Next Auth",
+    "loading": "Carregando sessão...",
+    "notLoggedIn": "Você não está logado",
+    "signIn": "Fazer login",
+    "signOut": "Sair"
+  },
+  "Home": {
+    "hero": {
+      "slogan": "Conectando você com a comunidade FURIA",
+      "learnMore": "Saiba mais",
+      "tapToExplore": "Toque para explorar",
+      "accessNow": "Acesse agora",
+      "askQuestions": {
+        "title": "Tire suas dúvidas",
+        "description": "Converse com nosso bot e receba respostas para suas perguntas."
+      },
+      "contactFuria": {
+        "title": "Entre em contato",
+        "description": "Conecte-se diretamente com a equipe e compartilhe suas ideias."
+      },
+      "matchSchedule": {
+        "title": "Calendário de jogos",
+        "description": "Fique por dentro dos próximos jogos e competições."
+      },
+      "contentCreators": {
+        "title": "Criadores de conteúdo",
+        "description": "Conheça os criadores oficiais de conteúdo e seus canais."
+      },
+      "community": {
+        "title": "Comunidade FURIA",
+        "description": "Participe de discussões e conecte-se com outros fãs.",
+        "preview": "Prévia do chat comunitário"
+      }
+    },
+    "fan": {
+      "title": "Torcida FURIA",
+      "subtitle": "A torcida mais apaixonada do Brasil",
+      "description": "Faça parte da família FURIA e viva momentos incríveis ao lado de outros torcedores apaixonados. Somos conhecidos pela energia, dedicação e lealdade em todos os eventos.",
+      "support": {
+        "title": "Suporte rápido",
+        "description": "Acesso prioritário aos nossos canais de atendimento e resolução de dúvidas com a equipe dedicada da FURIA."
+      },
+      "community": {
+        "title": "Contato com a comunidade",
+        "description": "Participe de grupos exclusivos para torcedores e conecte-se com fãs de todo o mundo."
+      },
+      "conclusion": "Como membro da torcida oficial, você estará mais próximo dos seus ídolos e fará parte desta comunidade que não para de crescer.",
+      "button": "Junte-se à torcida",
+      "imageAlt": "Torcida FURIA na IEM Rio Major 2022"
+    },
+    "store": {
+      "title": "Loja FURIA",
+      "subtitle": "Produtos oficiais",
+      "description": "Encontre os melhores produtos e acessórios FURIA em nossa loja oficial. Cada produto é desenhado pensando em nossos fãs para garantir a qualidade e o conforto.",
+      "delivery": {
+        "title": "Entrega Rápida",
+        "description": "Entrega para todo o Brasil com rastreamento e opções de envio expresso. Enviamos para mais de 20 países."
+      },
+      "quality": {
+        "title": "Qualidade Premium",
+        "description": "Todos os produtos são feitos com materiais de alta qualidade para garantir durabilidade e conforto."
+      },
+      "conclusion": "Nossa loja oferece coleções exclusivas e edições limitadas ao longo do ano. Membros FURIA têm acesso antecipado e descontos especiais.",
+      "button": "Visitar a loja",
+      "imageAlt": "Logo Oficial da FURIA"
+    },
+    "contact": {
+      "title": "Fale Conosco",
+      "subtitle": "Conecte-se conosco e faça parte da nossa história",
+      "heading": "Como podemos ajudar você hoje?",
+      "description": "O FURIA Connect oferece uma plataforma unificada para todas as suas dúvidas, necessidades de suporte e interações com a comunidade.",
+      "cards": {
+        "community": {
+          "title": "Conexão com a Comunidade",
+          "description": "Conecte-se com outros fãs, discuta estratégias e compartilhe sua paixão pela FURIA."
+        },
+        "support": {
+          "title": "Conexão em Tempo Real",
+          "description": "Interaja diretamente e em tempo real com nossa equipe para uma experiência mais dinâmica."
+        },
+        "questions": {
+          "title": "Dúvidas Gerais",
+          "description": "Faça perguntas sobre times, jogadores, eventos futuros ou oportunidades de parceria."
+        }
+      },
+      "cta": {
+        "prompt": "Quer se conectar com a FURIA?",
+        "button": "Iniciar chat"
+      }
+    }
+  },
+  "Settings": {
+    "title": "Configurações da conta",
+    "description": "Gerencie suas informações pessoais e preferências da conta",
+    "name": {
+      "title": "Nome de perfil",
+      "description": "Este é o nome que será exibido para outros usuários na plataforma",
+      "newName": "Novo nome",
+      "placeholder": "Digite seu nome",
+      "hint": "Seu nome completo ou como você prefere ser chamado",
+      "save": "Salvar alterações",
+      "saving": "Salvando...",
+      "cancel": "Cancelar",
+      "noName": "Sem nome configurado",
+      "edit": "Editar",
+      "error": "Erro ao atualizar nome",
+      "cooldown": "É necessário aguardar 10 minutos entre alterações."
+    },
+    "email": {
+      "title": "Endereço de email",
+      "description": "Este é o email associado à sua conta e usado para comunicações importantes",
+      "newEmail": "Novo email",
+      "placeholder": "Digite seu email",
+      "hint": "Você precisará validar o novo email após a mudança",
+      "save": "Salvar alterações",
+      "saving": "Salvando...",
+      "cancel": "Cancelar",
+      "noEmail": "Sem email configurado",
+      "edit": "Editar",
+      "error": "Erro ao atualizar email",
+      "cooldown": "É necessário aguardar 10 minutos entre alterações.",
+      "emailNotEditable": "O endereço de email não pode ser alterado após o cadastro."
+    },
+    "contact": {
+      "title": "Informações de Contato",
+      "description": "Adicione ou atualize suas informações para contato",
+      "name": "Nome",
+      "namePlaceholder": "Seu nome completo",
+      "email": "E-mail",
+      "emailPlaceholder": "seu@email.com",
+      "cpf": "CPF",
+      "cpfPlaceholder": "Apenas números",
+      "socialMedia": "Rede Social",
+      "socialMediaPlaceholder": "Selecione uma rede social",
+      "socialContact": "Contato da Rede Social",
+      "whatsappPlaceholder": "+55 (11) 99999-9999",
+      "telegramPlaceholder": "@usuario",
+      "discordPlaceholder": "usuariodiscord",
+      "emailContactPlaceholder": "seu@email.com",
+      "save": "Salvar Informações",
+      "saving": "Salvando...",
+      "success": "Informações salvas com sucesso",
+      "error": "Erro ao salvar informações",
+      "validation_error": "Por favor, corrija os erros de validação",
+      "cooldown": "É necessário aguardar 1 dia entre atualizações"
+    },
+    "delete": {
+      "title": "Excluir conta",
+      "description": "Remova permanentemente sua conta e todos os dados associados a ela",
+      "warning": "Aviso importante",
+      "warningMessage": "Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos.",
+      "instruction": "Para confirmar, digite DELETE abaixo:",
+      "placeholder": "Digite DELETE para confirmar",
+      "confirm": "Excluir permanentemente",
+      "deleting": "Excluindo...",
+      "cancel": "Cancelar",
+      "explanation": "Excluir sua conta removerá permanentemente todos os seus dados e não poderá ser desfeito.",
+      "button": "Excluir minha conta",
+      "error": "Erro ao deletar conta",
+      "cooldown": "É necessário aguardar 10 minutos entre tentativas."
+    },
+    "userPreview": {
+      "title": "Visualização do perfil",
+      "description": "Assim que seu perfil aparece para outros usuários",
+      "noName": "Usuário sem nome",
+      "memberSince": "Membro desde",
+      "unknownDate": "Data desconhecida"
+    }
+  },
+  "Chat": {
+    "header": {
+      "assistantTitle": "Assistente Virtual"
+    },
+    "input": {
+      "placeholder": "Digite sua resposta",
+      "sendButton": "Enviar"
+    },
+    "footer": {
+      "automatedChat": "Chat automatizado FURIA Connect - Use os botões acima para navegar"
+    },
+    "messageBubble": {
+      "welcome": {
+        "greeting": "Olá! Bem-vindo ao chat FURIA Connect! Aqui você pode obter informações sobre nossa equipe, jogadores, próximos eventos e muito mais. Para continuar, você precisa aceitar nossos termos de uso.",
+        "terms": "Os termos podem ser encontrados em:"
+      },
+      "toggleEmail": {
+        "show": "Mostrar email",
+        "hide": "Ocultar email"
+      },
+      "toggleCpf": {
+        "show": "Mostrar CPF",
+        "hide": "Ocultar CPF"
+      }
+    },
+    "profileSummary": {
+      "name": "Nome:",
+      "email": "E-mail:",
+      "cpf": "CPF:",
+      "show": "Mostrar",
+      "hide": "Esconder",
+      "notProvided": "Não informado"
+    },
+    "optionsButtons": {
+      "selected": "Selecionado"
+    },
+    "resetDialog": {
+      "title": "Reiniciar conversa?",
+      "description": "Você está tentando interagir com uma mensagem anterior. Deseja reiniciar a conversa do início?",
+      "cancel": "Cancelar",
+      "restart": "Reiniciar conversa"
+    }
+  }
+} 
