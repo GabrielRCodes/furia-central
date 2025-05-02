@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 export default function Community() {
   const t = useTranslations('Community');
   
-  return (
+    return (
     <div className="container max-w-7xl mx-auto py-6 px-3">
       {/* Page Header */}
       <div className="flex justify-between items-center mb-8">

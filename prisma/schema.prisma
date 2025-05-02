@@ -44,6 +44,8 @@ model User {
   image         String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  permissionLevel Int         @default(1000)
+  points Int @default(0)
   accounts      Account[]
   contactInfos  ContactInfos?
   sessions      Session[]
