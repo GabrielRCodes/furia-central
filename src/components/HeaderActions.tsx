@@ -3,7 +3,6 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { FiSun, FiMoon, FiGlobe, FiMessageSquare, FiSettings, FiLogOut, FiLogIn } from 'react-icons/fi';
 import {
   DropdownMenu,
@@ -28,6 +27,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocale } from '@/components/Providers';
 import { usePathname, useRouter } from 'next/navigation';
+import { LoginModal } from './LoginModal';
+import { VerifyRequestModal } from './VerifyRequestModal';
 
 export function HeaderActions() {
   const { data: session, status } = useSession();
@@ -36,6 +37,9 @@ export function HeaderActions() {
   const [avatarError, setAvatarError] = useState(false);
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isVerifyRequestOpen, setIsVerifyRequestOpen] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
   const t = useTranslations('HeaderActions');
   const pathname = usePathname();
   const router = useRouter();
@@ -45,10 +49,15 @@ export function HeaderActions() {
     await signOut({ callbackUrl: '/' });
   };
 
-  // Função para ir para a página de configurações e fechar o modal
   const handleGoToSettings = () => {
-    setIsPreferencesOpen(false); // Fecha o modal primeiro
-    router.push('/settings'); // Navega para a página de configurações
+    setIsPreferencesOpen(false);
+    router.push('/settings');
+  };
+
+  const handleVerifyRequest = (email: string) => {
+    setVerificationEmail(email);
+    setIsLoginModalOpen(false);
+    setIsVerifyRequestOpen(true);
   };
 
   // Renderiza o estado de carregamento
@@ -107,13 +116,29 @@ export function HeaderActions() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Botão de conectar */}
-        <Button size="sm" asChild>
-          <Link href="/login" className="flex items-center gap-1">
-            <FiLogIn className="h-4 w-4" />
-            <span>{t('buttons.connect')}</span>
-          </Link>
+        {/* Botão de conectar - Agora abre o modal */}
+        <Button 
+          size="sm" 
+          onClick={() => setIsLoginModalOpen(true)}
+          className="flex items-center gap-1"
+        >
+          <FiLogIn className="h-4 w-4" />
+          <span>{t('buttons.connect')}</span>
         </Button>
+
+        {/* Modal de Login */}
+        <LoginModal 
+          isOpen={isLoginModalOpen} 
+          onClose={() => setIsLoginModalOpen(false)}
+          onVerifyRequest={handleVerifyRequest}
+        />
+
+        {/* Modal de Verificação de Email */}
+        <VerifyRequestModal
+          isOpen={isVerifyRequestOpen}
+          onClose={() => setIsVerifyRequestOpen(false)}
+          email={verificationEmail}
+        />
       </div>
     );
   }
@@ -122,16 +147,6 @@ export function HeaderActions() {
   return (
     <>
       <div className="flex items-center space-x-3">
-        {/* Botão para ir ao chat */}
-        {pathname !== "/chat" && pathname !== "/chat/en" && (
-          <Button variant="outline" size="sm" asChild>
-            <Link href={status === "authenticated" ? "/chat" : "/login"} className="flex items-center gap-1">
-              <FiMessageSquare className="h-4 w-4" />
-              <span>{t('buttons.chat')}</span>
-            </Link>
-          </Button>
-        )}
-
         {/* Avatar do usuário - Clicável para abrir modal */}
         <Button 
           variant="ghost" 

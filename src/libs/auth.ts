@@ -14,8 +14,7 @@ export const authOptions = {
     strategy: "database" as const,
   },
   pages: {
-    signIn: '/login',
-    verifyRequest: '/verify-request',
+    error: '/', // Redireciona para a home em caso de erro
   },
   providers: [
     Google({
@@ -27,12 +26,6 @@ export const authOptions = {
       from: process.env.EMAIL_FROM || 'login@authentication.0r1.org',
     }),
   ],
-  callbacks: {
-    async redirect({ baseUrl }) {
-      // Redirecionar para a página de chat após login bem-sucedido
-      return `${baseUrl}/chat`;
-    },
-  },
 } as NextAuthConfig;
 
 /**
