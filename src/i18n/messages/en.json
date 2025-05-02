@@ -388,6 +388,8 @@
     "postFrom": "Post from {author}",
     "postedOn": "Posted on {date} at {time}",
     "gamesTitle": "Games",
-    "gamesDescription": "Stay updated with matches and competitions"
+    "gamesDescription": "Stay updated with matches and competitions",
+    "storeTitle": "Store",
+    "storeDescription": "Official FURIA merchandise"
   }
 } 

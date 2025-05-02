@@ -356,6 +356,8 @@
     "postFrom": "Publicação de {author}",
     "postedOn": "Publicado em {date} às {time}",
     "gamesTitle": "Jogos",
-    "gamesDescription": "Fique por dentro das partidas e competições"
+    "gamesDescription": "Fique por dentro das partidas e competições",
+    "storeTitle": "Loja",
+    "storeDescription": "Produtos oficiais da FURIA"
   }
 } 
