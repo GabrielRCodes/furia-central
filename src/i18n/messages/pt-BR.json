@@ -354,6 +354,8 @@
       "store": "Loja de Pontos"
     },
     "postFrom": "Publicação de {author}",
-    "postedOn": "Publicado em {date} às {time}"
+    "postedOn": "Publicado em {date} às {time}",
+    "gamesTitle": "Jogos",
+    "gamesDescription": "Fique por dentro das partidas e competições"
   }
 } 

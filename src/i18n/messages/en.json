@@ -386,6 +386,8 @@
       "store": "Points Store"
     },
     "postFrom": "Post from {author}",
-    "postedOn": "Posted on {date} at {time}"
+    "postedOn": "Posted on {date} at {time}",
+    "gamesTitle": "Games",
+    "gamesDescription": "Stay updated with matches and competitions"
   }
 } 
