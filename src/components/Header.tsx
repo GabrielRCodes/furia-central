@@ -12,11 +12,13 @@ import {
   FiShoppingBag,
   FiChevronRight,
   FiExternalLink,
-  FiHome
+  FiHome,
+  FiUsers,
+  FiMail
 } from 'react-icons/fi';
 import { SiTwitch, SiDiscord } from 'react-icons/si';
-import { useEffect, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
   Sheet,
@@ -28,58 +30,12 @@ import {
 } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator';
 
-// Custom hook for scroll handling
-function useScrollToSection(pathname: string, searchParams: URLSearchParams) {
-  useEffect(() => {
-    // Only run in browser environment
-    if (typeof window !== 'undefined' && pathname === '/') {
-      const goTo = searchParams.get('goTo');
-      if (goTo) {
-        // Use requestAnimationFrame to ensure DOM is ready
-        window.requestAnimationFrame(() => {
-          const element = document.getElementById(goTo);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            
-            // Remove the goTo parameter from URL without refreshing
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, '', newUrl);
-          }
-        });
-      }
-    }
-  }, [pathname, searchParams]);
-}
-
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const t = useTranslations('Header');
   
-  // Use the custom scroll hook
-  useScrollToSection(pathname, searchParams);
-  
-  // Scroll handler for navigation links
-  const handleNavigation = (sectionId: string, e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    
-    if (pathname === '/') {
-      // On homepage, scroll to section
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      // On other pages, redirect to home with query parameter
-      router.push(`/?goTo=${sectionId}`);
-    }
-    // Close mobile menu if open
-    if (open) setOpen(false);
-  };
-  
-  // Não renderizar o header na página de login
+  // Não renderizar o header em páginas específicas se necessário
   if (pathname === '/login' || pathname === '/verify-request') {
     return null;
   }
@@ -92,34 +48,32 @@ export function Header() {
           <Link href="/" className="flex items-center text-foreground/70 hover:text-primary transition-colors">
             <FiMessageCircle className="h-5 w-5 stroke-[2.5px]" aria-label={t('navigation.chat')} />
           </Link>
-          <a 
-            href="#about" 
-            className="text-foreground/70 hover:text-primary transition-colors cursor-pointer" 
-            onClick={(e) => handleNavigation('about', e)}
+          
+          <Link 
+            href="/influencers" 
+            className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
-            {t('navigation.about')}
-          </a>
+            <FiUsers className="h-4 w-4" />
+            <span>Influencers</span>
+          </Link>
+          
           <a 
-            href="#fans" 
-            className="text-foreground/70 hover:text-primary transition-colors cursor-pointer" 
-            onClick={(e) => handleNavigation('fans', e)}
+            href="https://furia.gg" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
-            {t('navigation.fans')}
+            <FiShoppingBag className="h-4 w-4" />
+            <span>Loja</span>
           </a>
-          <a 
-            href="#shop" 
-            className="text-foreground/70 hover:text-primary transition-colors cursor-pointer" 
-            onClick={(e) => handleNavigation('shop', e)}
+          
+          <Link 
+            href="/contact" 
+            className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
-            {t('navigation.shop')}
-          </a>
-          <a 
-            href="#contact" 
-            className="text-foreground/70 hover:text-primary transition-colors cursor-pointer" 
-            onClick={(e) => handleNavigation('contact', e)}
-          >
-            {t('navigation.contact')}
-          </a>
+            <FiMail className="h-4 w-4" />
+            <span>Contato</span>
+          </Link>
         </nav>
 
         {/* Versão Mobile - Apenas ícone de chat à esquerda */}
@@ -179,7 +133,33 @@ export function Header() {
                 >
                   <div className="flex items-center gap-3">
                     <FiHome className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Voltar para o início</span>
+                    <span className="font-medium">Início</span>
+                  </div>
+                  <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </Link>
+                
+                {/* Link para influencers */}
+                <Link 
+                  href="/influencers" 
+                  className="flex items-center justify-between p-3 rounded-md hover:bg-muted border border-border transition-colors group"
+                  onClick={() => setOpen(false)}
+                >
+                  <div className="flex items-center gap-3">
+                    <FiUsers className="h-5 w-5 text-primary" />
+                    <span className="font-medium">Influencers</span>
+                  </div>
+                  <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </Link>
+                
+                {/* Link para contato */}
+                <Link 
+                  href="/contact" 
+                  className="flex items-center justify-between p-3 rounded-md hover:bg-muted border border-border transition-colors group"
+                  onClick={() => setOpen(false)}
+                >
+                  <div className="flex items-center gap-3">
+                    <FiMail className="h-5 w-5 text-primary" />
+                    <span className="font-medium">Contato</span>
                   </div>
                   <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
