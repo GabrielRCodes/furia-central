@@ -359,5 +359,22 @@
     "gamesDescription": "Fique por dentro das partidas e competições",
     "storeTitle": "Loja",
     "storeDescription": "Produtos oficiais da FURIA"
+  },
+  "Community": {
+    "title": "Chat da Comunidade",
+    "description": "Converse com outros membros da FURIA em tempo real",
+    "refresh": "Atualizar",
+    "chat": {
+      "title": "Conversa",
+      "description": "Tenha respeito com os outros usuários e não compartilhe conteúdo NSFW.",
+      "input": {
+        "placeholder": "Digite sua mensagem...",
+        "attachImage": "Anexar imagem",
+        "send": "Enviar"
+      },
+      "imageModal": {
+        "title": "Imagem expandida do chat"
+      }
+    }
   }
 } 

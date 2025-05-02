@@ -391,5 +391,22 @@
     "gamesDescription": "Stay updated with matches and competitions",
     "storeTitle": "Store",
     "storeDescription": "Official FURIA merchandise"
+  },
+  "Community": {
+    "title": "Community Chat",
+    "description": "Chat with other FURIA members in real-time",
+    "refresh": "Refresh",
+    "chat": {
+      "title": "Conversation",
+      "description": "Be respectful with other users and do not share NSFW content.",
+      "input": {
+        "placeholder": "Type your message...",
+        "attachImage": "Attach image",
+        "send": "Send"
+      },
+      "imageModal": {
+        "title": "Expanded chat image"
+      }
+    }
   }
 } 
