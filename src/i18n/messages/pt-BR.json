@@ -88,6 +88,12 @@
       "preferences": "Preferências",
       "theme": "Tema",
       "language": "Idioma"
+    },
+    "coins": {
+      "title": "Suas Moedas",
+      "description": "Use suas moedas para resgatar itens exclusivos na loja de pontos.",
+      "balance": "Saldo atual",
+      "goToStore": "Ir para Loja de Pontos"
     }
   },
   "Login": {

@@ -120,6 +120,12 @@
       "preferences": "Preferences",
       "theme": "Theme",
       "language": "Language"
+    },
+    "coins": {
+      "title": "Your Coins",
+      "description": "Use your coins to redeem exclusive items in the points store.",
+      "balance": "Current balance",
+      "goToStore": "Go to Points Store"
     }
   },
   "Login": {

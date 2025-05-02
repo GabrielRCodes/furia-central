@@ -4,6 +4,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { FiSun, FiMoon, FiGlobe, FiSettings, FiLogOut, FiLogIn } from 'react-icons/fi';
+import { FaCoins } from 'react-icons/fa';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,12 +24,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocale } from '@/components/Providers';
 import { useRouter } from 'next/navigation';
 import { LoginModal } from './LoginModal';
 import { VerifyRequestModal } from './VerifyRequestModal';
+
+// Função para formatar número em formato K (mil)
+const formatNumberToK = (number: number): string => {
+  if (number >= 1000) {
+    return (number / 1000).toFixed(1) + 'K';
+  }
+  return number.toString();
+};
 
 export function HeaderActions() {
   const { data: session, status } = useSession();
@@ -39,9 +49,14 @@ export function HeaderActions() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isVerifyRequestOpen, setIsVerifyRequestOpen] = useState(false);
+  const [isCoinsModalOpen, setIsCoinsModalOpen] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
   const t = useTranslations('HeaderActions');
   const router = useRouter();
+  
+  // Quantidade de moedas (estático por enquanto)
+  const coinsAmount = 10500;
+  const formattedCoins = formatNumberToK(coinsAmount);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -51,6 +66,11 @@ export function HeaderActions() {
   const handleGoToSettings = () => {
     setIsPreferencesOpen(false);
     router.push('/settings');
+  };
+  
+  const handleGoToStore = () => {
+    setIsCoinsModalOpen(false);
+    router.push('/store');
   };
 
   const handleVerifyRequest = (email: string) => {
@@ -146,6 +166,17 @@ export function HeaderActions() {
   return (
     <>
       <div className="flex items-center space-x-3">
+        {/* Botão de Moedas */}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => setIsCoinsModalOpen(true)}
+          className="h-8 flex items-center gap-2 px-3"
+        >
+          <FaCoins className="h-3 w-3 text-yellow-500" />
+          <span className="text-xs font-medium">{formattedCoins}</span>
+        </Button>
+        
         {/* Avatar do usuário - Clicável para abrir modal */}
         <Button 
           variant="ghost" 
@@ -165,6 +196,42 @@ export function HeaderActions() {
           </Avatar>
         </Button>
       </div>
+
+      {/* Modal de Moedas */}
+      <Dialog open={isCoinsModalOpen} onOpenChange={setIsCoinsModalOpen}>
+        <DialogContent className="sm:max-w-[350px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FaCoins className="h-5 w-5 text-yellow-500" />
+              <span>{t('coins.title', { defaultValue: 'Suas Moedas' })}</span>
+            </DialogTitle>
+            <DialogDescription>
+              {t('coins.description', { defaultValue: 'Use suas moedas para resgatar itens exclusivos na loja de pontos.' })}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center py-6">
+            <div className="bg-muted/50 rounded-full w-24 h-24 flex items-center justify-center mb-4">
+              <FaCoins className="h-10 w-10 text-yellow-500" />
+            </div>
+            <div className="text-center">
+              <p className="text-xl font-bold">{coinsAmount.toLocaleString()}</p>
+              <p className="text-sm text-muted-foreground">
+                {t('coins.balance', { defaultValue: 'Saldo atual' })}
+              </p>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button 
+              onClick={handleGoToStore} 
+              className="w-full"
+            >
+              {t('coins.goToStore', { defaultValue: 'Ir para Loja de Pontos' })}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal de Preferências */}
       <Dialog open={isPreferencesOpen} onOpenChange={setIsPreferencesOpen}>
