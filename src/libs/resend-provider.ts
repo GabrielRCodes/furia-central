@@ -70,11 +70,11 @@ export async function sendVerificationRequest(params: {
   };
 
   // Template de email em português (padrão)
-  let emailSubject = 'FURIA Connect - Verificação de e-mail';
+  let emailSubject = 'FURIA Central - Verificação de e-mail';
   let emailHtml = `
     <div style="${sharedStyles.container}">
       <div style="${sharedStyles.header}">
-        <h1 style="${sharedStyles.logo}">FURIA Connect</h1>
+        <h1 style="${sharedStyles.logo}">FURIA Central</h1>
       </div>
       <div style="${sharedStyles.card}">
         <h2 style="${sharedStyles.title}">Verificação de e-mail</h2>
@@ -94,18 +94,18 @@ export async function sendVerificationRequest(params: {
         </p>
       </div>
       <div style="${sharedStyles.footer}">
-        <p>FURIA Connect - Conectando a comunidade FURIA</p>
+        <p>FURIA Central - Conectando a comunidade FURIA</p>
       </div>
     </div>
   `;
 
   // Template de email em inglês
   if (isEnglish) {
-    emailSubject = 'FURIA Connect - Email Verification';
+    emailSubject = 'FURIA Central - Email Verification';
     emailHtml = `
       <div style="${sharedStyles.container}">
         <div style="${sharedStyles.header}">
-          <h1 style="${sharedStyles.logo}">FURIA Connect</h1>
+          <h1 style="${sharedStyles.logo}">FURIA Central</h1>
         </div>
         <div style="${sharedStyles.card}">
           <h2 style="${sharedStyles.title}">Email Verification</h2>
@@ -125,7 +125,7 @@ export async function sendVerificationRequest(params: {
           </p>
         </div>
         <div style="${sharedStyles.footer}">
-          <p>FURIA Connect - Connecting the FURIA community</p>
+          <p>FURIA Central - Connecting the FURIA community</p>
         </div>
       </div>
     `;

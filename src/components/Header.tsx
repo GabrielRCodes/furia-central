@@ -164,7 +164,7 @@ export function Header() {
               <SheetHeader className="pb-4">
                 <SheetTitle className="text-xl">{t('sidebar.title')}</SheetTitle>
                 <SheetDescription>
-                  FURIA Connect
+                  FURIA Central
                 </SheetDescription>
               </SheetHeader>
               

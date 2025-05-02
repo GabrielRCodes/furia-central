@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FURIA Connect | Conecte-se com a FURIA",
-  description: "Uma plataforma feita para conectar fãs da FURIA. Conecte-se, conheça outros fãs, apoie o projeto e acompanhe todas as novidades da organização.",
+  title: "FURIA Central | Conecte-se com a FURIA",
+  description: "A central oficial dos fãs da FURIA. Acompanhe as redes sociais dos influenciadores, interaja no chat da comunidade, participe de eventos e adquira itens exclusivos.",
   keywords: ["FURIA", "eSports", "comunidade", "jogos", "eventos", "gaming"],
   authors: [{ name: "FURIA eSports" }],
   creator: "FURIA",
@@ -24,23 +24,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://furia-connect.0r1.org",
-    title: "FURIA Connect | Conecte-se com a FURIA",
-    description: "Uma plataforma feita para conectar fãs da FURIA. Conecte-se, conheça outros fãs, apoie o projeto e acompanhe todas as novidades da organização.",
-    siteName: "FURIA Connect",
+    url: "https://furia-central.0r1.org",
+    title: "FURIA Central | Conecte-se com a FURIA",
+    description: "A central oficial dos fãs da FURIA. Acompanhe as redes sociais dos influenciadores, interaja no chat da comunidade, participe de eventos e adquira itens exclusivos.",
+    siteName: "FURIA Central",
     images: [
       {
         url: "https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png",
         width: 1200,
         height: 630,
-        alt: "FURIA Connect - Plataforma Oficial",
+        alt: "FURIA Central - Plataforma Oficial",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FURIA Connect | Conecte-se com a FURIA",
-    description: "Uma plataforma feita para conectar fãs da FURIA. Conecte-se, conheça outros fãs, apoie o projeto e acompanhe todas as novidades da organização.",
+    title: "FURIA Central | Conecte-se com a FURIA",
+    description: "A central oficial dos fãs da FURIA. Acompanhe as redes sociais dos influenciadores, interaja no chat da comunidade, participe de eventos e adquira itens exclusivos.",
     images: ["https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png"],
     creator: "@furiagg",
   },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },
-  metadataBase: new URL("https://furia-connect.0r1.org"),
+  metadataBase: new URL("https://furia-central.0r1.org"),
 };
 
 // Impedir que esta página seja armazenada em cache para garantir que mudanças de idioma sejam aplicadas

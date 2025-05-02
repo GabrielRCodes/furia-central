@@ -1,6 +1,6 @@
 {
   "Index": {
-    "title": "Bem-vindo ao FURIA Connect",
+    "title": "Bem-vindo ao FURIA Central",
     "description": "Uma plataforma moderna construída com Next.js e shadcn/ui",
     "server": {
       "title": "Componente Servidor",
@@ -78,7 +78,7 @@
     },
     "preferences": {
       "title": "Preferências",
-      "description": "Personalize a sua experiência no FURIA Connect",
+      "description": "Personalize a sua experiência no FURIA Central",
       "account": "Conta",
       "preferences": "Preferências",
       "theme": "Tema",
@@ -86,7 +86,7 @@
     }
   },
   "Login": {
-    "title": "Entrar no FURIA Connect",
+    "title": "Entrar no FURIA Central",
     "description": "Escolha um método de autenticação para acessar sua conta na plataforma",
     "google": "Continuar com Google",
     "socialLogin": "Login social",
@@ -96,7 +96,7 @@
     "continueWithEmail": "Continuar com email",
     "or": "ou",
     "backToHome": "Voltar para a página inicial",
-    "footer": "FURIA Connect - Conectando a comunidade FURIA",
+    "footer": "FURIA Central - Conectando a comunidade FURIA",
     "errors": {
       "default": "Erro ao fazer login. Tente novamente.",
       "OAuthSignin": "Erro durante o processo de autenticação.",
@@ -190,7 +190,7 @@
       "title": "Fale Conosco",
       "subtitle": "Conecte-se conosco e faça parte da nossa história",
       "heading": "Como podemos ajudar você hoje?",
-      "description": "O FURIA Connect oferece uma plataforma unificada para todas as suas dúvidas, necessidades de suporte e interações com a comunidade.",
+      "description": "O FURIA Central oferece uma plataforma unificada para todas as suas dúvidas, necessidades de suporte e interações com a comunidade.",
       "cards": {
         "community": {
           "title": "Conexão com a Comunidade",
@@ -298,11 +298,11 @@
       "sendButton": "Enviar"
     },
     "footer": {
-      "automatedChat": "Chat automatizado FURIA Connect - Use os botões acima para navegar"
+      "automatedChat": "Chat automatizado FURIA Central - Use os botões acima para navegar"
     },
     "messageBubble": {
       "welcome": {
-        "greeting": "Olá! Bem-vindo ao chat FURIA Connect! Aqui você pode obter informações sobre nossa equipe, jogadores, próximos eventos e muito mais. Para continuar, você precisa aceitar nossos termos de uso.",
+        "greeting": "Olá! Bem-vindo ao chat FURIA Central! Aqui você pode obter informações sobre nossa equipe, jogadores, próximos eventos e muito mais. Para continuar, você precisa aceitar nossos termos de uso.",
         "terms": "Os termos podem ser encontrados em:"
       },
       "toggleEmail": {

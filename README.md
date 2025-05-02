@@ -59,8 +59,8 @@ Um aspecto importante da segurança da aplicação é o sistema de cooldown impl
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/furia-connect.git
-cd furia-connect
+git clone https://github.com/seu-usuario/furia-central.git
+cd furia-central
 ```
 
 2. Instale as dependências:
@@ -112,7 +112,7 @@ Para executar este projeto, você precisará adicionar as seguintes variáveis d
 
 ```
 # Database
-DATABASE_URL="mysql://user:password@localhost:3306/furia_connect"
+DATABASE_URL="mysql://user:password@localhost:3306/furia_central"
 
 # Next-Auth
 NEXTAUTH_URL="http://localhost:3000"

@@ -16,7 +16,7 @@ export function StickyHeader() {
       <div className="w-full max-w-7xl mx-auto flex justify-between items-center p-3">
         {/* Logo - lado esquerdo */}
         <div className="font-medium text-xl">
-          Furia Connect
+          Furia Central
         </div>
         
         {/* Ações do header - lado direito */}

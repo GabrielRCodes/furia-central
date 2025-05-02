@@ -17,19 +17,6 @@ export default async function middleware(request: NextRequest) {
     ? localeCookie.value 
     : 'pt-BR';
 
-  // Check if we need to redirect for chat routes
-  if (request.nextUrl.pathname === '/chat') {
-    // If locale is English, redirect to English chat
-    if (locale === 'en') {
-      return NextResponse.redirect(new URL('/chat/en', request.url));
-    }
-  } else if (request.nextUrl.pathname === '/chat/en') {
-    // If locale is Portuguese and user is on English chat page, redirect to Portuguese chat
-    if (locale === 'pt-BR') {
-      return NextResponse.redirect(new URL('/chat', request.url));
-    }
-  }
-
   // Set locale in header for next-intl
   const response = NextResponse.next();
   
