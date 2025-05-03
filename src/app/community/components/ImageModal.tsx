@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 
 interface ImageModalProps {
   imageUrl: string | null;
-  onClose: () => void;
+  onCloseAction: () => void;
 }
 
 // Componente DialogContent customizado com Framer Motion
@@ -28,11 +28,11 @@ const MotionDialogContent = motion(({
   </div>
 ));
 
-export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
+export function ImageModal({ imageUrl, onCloseAction }: ImageModalProps) {
   const t = useTranslations('Community.chat.imageModal');
   
   return (
-    <Dialog open={!!imageUrl} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={!!imageUrl} onOpenChange={(open) => !open && onCloseAction()}>
       <AnimatePresence mode="wait">
         {!!imageUrl && (
           <>

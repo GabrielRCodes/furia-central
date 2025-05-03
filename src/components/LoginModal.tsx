@@ -20,11 +20,11 @@ import {
 
 interface LoginModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onVerifyRequest: (email: string) => void;
+  onCloseAction: () => void;
+  onVerifyRequestAction: (email: string) => void;
 }
 
-export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps) {
+export function LoginModal({ isOpen, onCloseAction, onVerifyRequestAction }: LoginModalProps) {
   const t = useTranslations('Login');
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -79,7 +79,7 @@ export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps
       }
       
       // Notificar o componente pai para mostrar a tela de verificação
-      onVerifyRequest(email);
+      onVerifyRequestAction(email);
       
       // Usando o signIn com o provider 'resend' (ID do nosso provider personalizado)
       await signIn('resend', {
@@ -97,7 +97,7 @@ export function LoginModal({ isOpen, onClose, onVerifyRequest }: LoginModalProps
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onCloseAction}>
       <DialogContent className="sm:max-w-md md:max-w-4xl p-0 overflow-hidden">
         <div className="flex flex-col md:flex-row">
           <div className="relative w-full md:w-1/2 h-0 md:h-[550px] hidden md:block">

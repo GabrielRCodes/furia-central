@@ -19,10 +19,10 @@ interface ChatMessageProps {
   message: Message;
   userName: string;
   userInitials: string;
-  onImageClick: (imageUrl: string) => void;
+  onImageClickAction: (imageUrl: string) => void;
 }
 
-export function ChatMessage({ message, userName, userInitials, onImageClick }: ChatMessageProps) {
+export function ChatMessage({ message, userName, userInitials, onImageClickAction }: ChatMessageProps) {
   return (
     <motion.div
       className={`flex ${
@@ -68,7 +68,7 @@ export function ChatMessage({ message, userName, userInitials, onImageClick }: C
           {message.type === 'image' ? (
             <div 
               className="w-64 h-40 relative cursor-pointer overflow-hidden rounded group"
-              onClick={() => onImageClick(message.content)}
+              onClick={() => onImageClickAction(message.content)}
             >
               <Image
                 src={message.content}

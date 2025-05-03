@@ -148,14 +148,14 @@ export function HeaderActions() {
         {/* Modal de Login */}
         <LoginModal 
           isOpen={isLoginModalOpen} 
-          onClose={() => setIsLoginModalOpen(false)}
-          onVerifyRequest={handleVerifyRequest}
+          onCloseAction={() => setIsLoginModalOpen(false)}
+          onVerifyRequestAction={handleVerifyRequest}
         />
 
         {/* Modal de Verificação de Email */}
         <VerifyRequestModal
           isOpen={isVerifyRequestOpen}
-          onClose={() => setIsVerifyRequestOpen(false)}
+          onCloseAction={() => setIsVerifyRequestOpen(false)}
           email={verificationEmail}
         />
       </div>

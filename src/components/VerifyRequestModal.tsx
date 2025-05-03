@@ -14,15 +14,15 @@ import {
 
 interface VerifyRequestModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onCloseAction: () => void;
   email: string | null;
 }
 
-export function VerifyRequestModal({ isOpen, onClose, email }: VerifyRequestModalProps) {
+export function VerifyRequestModal({ isOpen, onCloseAction, email }: VerifyRequestModalProps) {
   const t = useTranslations('VerifyRequest');
   
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onCloseAction}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -53,7 +53,7 @@ export function VerifyRequestModal({ isOpen, onClose, email }: VerifyRequestModa
         </div>
         
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="w-full mt-4">
+          <Button variant="outline" onClick={onCloseAction} className="w-full mt-4">
             {t('backToLogin')}
           </Button>
         </DialogFooter>

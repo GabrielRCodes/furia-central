@@ -143,7 +143,7 @@ export function ChatContainer() {
         </CardContent>
         <CardFooter className="border-t px-4">
           <div className="flex w-full gap-2">
-            <ChatInput onSendMessage={() => {}} />
+            <ChatInput onSendMessageAction={() => {}} />
           </div>
         </CardFooter>
       </Card>
@@ -171,7 +171,7 @@ export function ChatContainer() {
                 message={message}
                 userName={userName}
                 userInitials={userInitials}
-                onImageClick={handleImageClick}
+                onImageClickAction={handleImageClick}
               />
             ))}
             {/* Div invisível para rolar para o final */}
@@ -180,13 +180,13 @@ export function ChatContainer() {
         </CardContent>
         
         <CardFooter className="border-t px-4">
-          <ChatInput onSendMessage={handleSendMessage} />
+          <ChatInput onSendMessageAction={handleSendMessage} />
         </CardFooter>
       </Card>
 
       <ImageModal 
         imageUrl={selectedImage} 
-        onClose={closeImageModal} 
+        onCloseAction={closeImageModal} 
       />
     </>
   );

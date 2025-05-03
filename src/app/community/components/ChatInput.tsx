@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface ChatInputProps {
-  onSendMessage: (message: string) => void;
+  onSendMessageAction: (message: string) => void;
 }
 
-export function ChatInput({ onSendMessage }: ChatInputProps) {
+export function ChatInput({ onSendMessageAction }: ChatInputProps) {
   const t = useTranslations('Community.chat.input');
   const [inputMessage, setInputMessage] = useState('');
 
@@ -22,7 +22,7 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
   // Send message
   const sendMessage = () => {
     if (!inputMessage.trim()) return;
-    onSendMessage(inputMessage.trim());
+    onSendMessageAction(inputMessage.trim());
     setInputMessage('');
   };
 
