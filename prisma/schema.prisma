@@ -49,6 +49,7 @@ model User {
   accounts      Account[]
   contactInfos  ContactInfos?
   sessions      Session[]
+  shareLinks    ShareLink[]
 }
 
 model VerificationToken {
@@ -93,6 +94,17 @@ model ContactInfos {
   createdAt    DateTime @default(now())
   userId       String   @unique
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ShareLink {
+  id           String    @id @default(cuid())
+  userId       String
+  targetUrl    String
+  createdAt    DateTime  @default(now())
+  expiresAt    DateTime?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

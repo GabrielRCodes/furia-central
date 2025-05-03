@@ -7,7 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { 
   FaShareAlt,
-  FaExternalLinkAlt
+  FaExternalLinkAlt,
+  FaCopy
 } from 'react-icons/fa'
 import { MdVerified } from 'react-icons/md'
 import { useState } from 'react'
@@ -16,10 +17,15 @@ import {
   DialogContent,
   DialogTrigger,
   DialogClose,
-  DialogTitle
+  DialogTitle,
+  DialogHeader,
+  DialogFooter
 } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
+import { createShareLink } from '@/utils/createShareLink'
 
 type SocialMedia = 'twitter' | 'instagram' | 'youtube' | 'twitch' | 'tiktok'
 
@@ -36,6 +42,9 @@ export interface Post {
 export function PostCard({ post }: { post: Post }) {
   const [contentModalOpen, setContentModalOpen] = useState(false)
   const [imageModalOpen, setImageModalOpen] = useState(false)
+  const [shareModalOpen, setShareModalOpen] = useState(false)
+  const [isSharing, setIsSharing] = useState(false)
+  const [shareUrl, setShareUrl] = useState('')
   const t = useTranslations('Timeline')
 
   const defaultAvatar = "https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png"
@@ -75,6 +84,64 @@ export function PostCard({ post }: { post: Post }) {
     });
 
     return formattedText;
+  };
+
+  // Função para compartilhar o link com o sistema de pontos
+  const handleShare = async () => {
+    if (isSharing) return;
+    
+    try {
+      setIsSharing(true);
+      
+      // Criar um link de compartilhamento
+      const result = await createShareLink(post.url);
+      
+      if (!result.success) {
+        if (result.cooldown) {
+          toast.warning(t('shareCooldown', { defaultValue: 'Aguarde um momento antes de compartilhar novamente.' }));
+        } else {
+          toast.error(t('linkCopyError', { defaultValue: 'Erro ao gerar link. Tente novamente.' }));
+        }
+        return;
+      }
+      
+      // Verificar se o shareUrl está definido antes de abrir o modal
+      if (result.shareUrl) {
+        setShareUrl(result.shareUrl);
+        setShareModalOpen(true);
+        
+        // Mostrar toast específico se o link já existia
+        if (result.isExisting) {
+          toast.info(t('linkAlreadyExists', { defaultValue: 'Você já tem um link ativo para esta publicação.' }));
+        } else {
+          // Mostrar toast apenas para novos links
+          toast.info(t('sharePointsInfo', { defaultValue: 'Compartilhe para ganhar pontos!' }), {
+            description: t('sharePointsDescription', { defaultValue: 'Você ganha 1 ponto cada vez que alguém acessa seu link.' })
+          });
+        }
+      } else {
+        toast.error(t('linkGenerationError', { defaultValue: 'Erro ao gerar o link de compartilhamento.' }));
+      }
+    } catch (error) {
+      // Se ocorrer um erro, mostrar um toast de erro
+      toast.error(t('linkCopyError', { defaultValue: 'Erro ao copiar o link. Tente novamente.' }));
+      console.error('Erro ao gerar/copiar link:', error);
+    } finally {
+      setIsSharing(false);
+    }
+  };
+
+  // Função para copiar o link do modal para a área de transferência
+  const copyShareLink = async () => {
+    if (!shareUrl) return;
+    
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success(t('linkCopied', { defaultValue: 'Link copiado para a área de transferência!' }));
+    } catch (error) {
+      toast.error(t('linkCopyError', { defaultValue: 'Erro ao copiar o link. Tente novamente.' }));
+      console.error('Erro ao copiar link:', error);
+    }
   };
 
   return (
@@ -162,12 +229,51 @@ export function PostCard({ post }: { post: Post }) {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Modal de compartilhamento */}
+        <Dialog open={shareModalOpen} onOpenChange={setShareModalOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>{t('shareTitle', { defaultValue: 'Compartilhar publicação' })}</DialogTitle>
+            </DialogHeader>
+            <div className="flex items-center space-x-2 mt-4">
+              <Input 
+                value={shareUrl} 
+                readOnly 
+                className="flex-1"
+                onClick={(e) => (e.target as HTMLInputElement).select()}
+              />
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={copyShareLink}
+                title={t('copyLink', { defaultValue: 'Copiar link' })}
+              >
+                <FaCopy className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              {t('sharePointsDescription', { defaultValue: 'Você ganha 1 ponto cada vez que alguém acessa seu link.' })}
+            </p>
+            <DialogFooter className="mt-4">
+              <DialogClose asChild>
+                <Button variant="outline">{t('close', { defaultValue: 'Fechar' })}</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
       
       <CardFooter className="px-6 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t">
-        <Button variant="outline" size="default" className="flex items-center justify-center w-full">
-          <FaShareAlt className="h-4 w-4 mr-2" />
-          <span>{t('share')}</span>
+        <Button 
+          variant="outline" 
+          size="default" 
+          className="flex items-center justify-center w-full"
+          onClick={handleShare}
+          disabled={isSharing}
+        >
+          <FaShareAlt className={`h-4 w-4 mr-2 ${isSharing ? 'animate-pulse' : ''}`} />
+          <span>{isSharing ? t('sharing', { defaultValue: 'Compartilhando...' }) : t('share')}</span>
         </Button>
         <Button variant="outline" size="default" asChild className="flex items-center justify-center w-full">
           <Link href={post.url} target="_blank" className="flex items-center justify-center">

@@ -364,12 +364,22 @@
     "loginPromptTitle": "Acesso exclusivo para membros FURIA",
     "loginPromptDescription": "Faça login para desbloquear todas as publicações, interagir com a comunidade e aproveitar recursos exclusivos da plataforma. Membros verificados têm acesso a conteúdo adicional, promoções especiais e muito mais.",
     "share": "Compartilhar",
+    "sharing": "Compartilhando...",
     "visit": "Visitar",
     "seeMore": "Ver mais",
     "buy": "Comprar",
     "featureInDevelopment": "Recurso em desenvolvimento",
     "purchaseDescription": "O sistema de compras ainda está em desenvolvimento. Em breve será possível adquirir produtos oficiais da FURIA diretamente pelo FURIA Central.",
-    "close": "Fechar"
+    "close": "Fechar",
+    "linkCopied": "Link copiado para a área de transferência!",
+    "linkCopyError": "Erro ao copiar o link. Tente novamente.",
+    "linkGenerationError": "Erro ao gerar o link de compartilhamento.",
+    "shareCooldown": "Aguarde um momento antes de compartilhar novamente.",
+    "sharePointsInfo": "Compartilhe para ganhar pontos!",
+    "sharePointsDescription": "Você ganha 1 ponto cada vez que alguém acessa seu link.",
+    "shareTitle": "Compartilhar publicação",
+    "copyLink": "Copiar link",
+    "linkAlreadyExists": "Você já tem um link ativo para esta publicação."
   },
   "Community": {
     "title": "Chat da Comunidade",

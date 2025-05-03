@@ -396,12 +396,22 @@
     "loginPromptTitle": "Exclusive access for FURIA members",
     "loginPromptDescription": "Sign in to unlock all posts, interact with the community, and enjoy exclusive platform features. Verified members get access to additional content, special promotions, and much more.",
     "share": "Share",
+    "sharing": "Sharing...",
     "visit": "Visit",
     "seeMore": "See More",
     "buy": "Buy",
     "featureInDevelopment": "Feature in development",
     "purchaseDescription": "The purchasing system is still under development. Soon it will be possible to purchase official FURIA products directly through FURIA Central.",
-    "close": "Close"
+    "close": "Close",
+    "linkCopied": "Link copied to clipboard!",
+    "linkCopyError": "Error copying link. Please try again.",
+    "linkGenerationError": "Error generating sharing link.",
+    "shareCooldown": "Please wait a moment before sharing again.",
+    "sharePointsInfo": "Share to earn points!",
+    "sharePointsDescription": "You earn 1 point each time someone accesses your link.",
+    "shareTitle": "Share post",
+    "copyLink": "Copy link",
+    "linkAlreadyExists": "You already have an active link for this post."
   },
   "Community": {
     "title": "Community Chat",

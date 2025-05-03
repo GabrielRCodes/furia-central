@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
 
 export interface GamePost {
   championshipName: string
@@ -72,6 +73,24 @@ export function GameCard({ post }: { post: GamePost }) {
 
     return formattedText;
   };
+
+  // Função para compartilhar o link
+  const handleShare = async () => {
+    // O link a ser compartilhado (URL completa da página atual + parâmetro de query)
+    const shareUrl = `${window.location.origin}${window.location.pathname}?post=${post.url}`
+    
+    try {
+      // Copiar o texto para a área de transferência
+      await navigator.clipboard.writeText(shareUrl)
+      
+      // Mostrar um toast de sucesso
+      toast.success(t('linkCopied', { defaultValue: 'Link copiado para a área de transferência!' }))
+    } catch (error) {
+      // Se ocorrer um erro, mostrar um toast de erro
+      toast.error(t('linkCopyError', { defaultValue: 'Erro ao copiar o link. Tente novamente.' }))
+      console.error('Erro ao copiar para a área de transferência:', error)
+    }
+  }
 
   return (
     <Card className="overflow-hidden flex flex-col transition-colors duration-200 hover:bg-muted/90 dark:hover:bg-muted/10">
@@ -167,7 +186,12 @@ export function GameCard({ post }: { post: GamePost }) {
       </CardContent>
       
       <CardFooter className="px-6 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t">
-        <Button variant="outline" size="default" className="flex items-center justify-center w-full">
+        <Button 
+          variant="outline" 
+          size="default" 
+          className="flex items-center justify-center w-full"
+          onClick={handleShare}
+        >
           <FaShareAlt className="h-4 w-4 mr-2" />
           <span>{t('share')}</span>
         </Button>
