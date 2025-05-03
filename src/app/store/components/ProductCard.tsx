@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { FaShoppingCart, FaExternalLinkAlt, FaShareAlt } from 'react-icons/fa'
+import { FaShoppingCart, FaExternalLinkAlt } from 'react-icons/fa'
 import { useState } from 'react'
 import {
   Dialog,
@@ -35,24 +35,6 @@ export function ProductCard({ product }: { product: Product }) {
   const t = useTranslations('Timeline')
   
   const productUrl = product.productUrl || "https://www.furia.gg/produto/camiseta-oficial-furia-adidas-preta-150265"
-
-  // Função para compartilhar o link do produto
-  const handleShare = async () => {
-    // O link a ser compartilhado 
-    const shareUrl = productUrl
-    
-    try {
-      // Copiar o texto para a área de transferência
-      await navigator.clipboard.writeText(shareUrl)
-      
-      // Mostrar um toast de sucesso
-      toast.success(t('linkCopied', { defaultValue: 'Link copiado para a área de transferência!' }))
-    } catch (error) {
-      // Se ocorrer um erro, mostrar um toast de erro
-      toast.error(t('linkCopyError', { defaultValue: 'Erro ao copiar o link. Tente novamente.' }))
-      console.error('Erro ao copiar para a área de transferência:', error)
-    }
-  }
 
   return (
     <Card className="overflow-hidden flex flex-col transition-colors duration-200 hover:bg-muted/90 dark:hover:bg-muted/10">
@@ -135,16 +117,7 @@ export function ProductCard({ product }: { product: Product }) {
         </Dialog>
       </CardContent>
       
-      <CardFooter className="px-6 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t">
-        <Button 
-          variant="outline" 
-          size="default" 
-          className="flex items-center justify-center w-full"
-          onClick={handleShare}
-        >
-          <FaShareAlt className="h-4 w-4 mr-2" />
-          <span>{t('share', { defaultValue: 'Compartilhar' })}</span>
-        </Button>
+      <CardFooter className="px-6 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t">
         <Button variant="outline" size="default" asChild className="flex items-center justify-center w-full">
           <Link href={productUrl} target="_blank" className="flex items-center justify-center">
             <FaExternalLinkAlt className="h-4 w-4 mr-2" />
