@@ -18,6 +18,10 @@ import {
 } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
+import { Textarea } from '@/components/ui/textarea'
+import { purchaseProduct } from '../actions'
+import { useRouter } from 'next/navigation'
 
 export interface Product {
   name: string
@@ -29,9 +33,59 @@ export interface Product {
 export function ProductCard({ product }: { product: Product }) {
   const [imageModalOpen, setImageModalOpen] = useState(false)
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false)
+  const [contactInfo, setContactInfo] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const t = useTranslations('Timeline')
+  const router = useRouter()
   
   const productUrl = product.productUrl || "https://www.furia.gg/produto/camiseta-furia-adidas-preta-150263"
+
+  const handlePurchase = async () => {
+    if (!contactInfo.trim()) {
+      toast.error('Por favor, informe uma forma de contato')
+      return
+    }
+
+    setIsLoading(true)
+    
+    try {
+      const result = await purchaseProduct({
+        productName: product.name,
+        productPoints: parseInt(product.points),
+        contactInfo: contactInfo,
+        productImage: product.productImage || '',
+        productUrl: productUrl
+      })
+      
+      if (result.status === 200) {
+        toast.success('Compra realizada com sucesso!', {
+          description: 'Nossa equipe entrará em contato em breve.'
+        })
+        setPurchaseModalOpen(false)
+        router.refresh()
+      } else if (result.status === 429) {
+        toast.warning('Aguarde antes de fazer outra compra', {
+          description: 'Você precisa esperar 3 minutos entre compras.'
+        })
+      } else if (result.status === 401) {
+        toast.error('É necessário estar logado para realizar compras')
+      } else if (result.status === 402) {
+        toast.error('Saldo insuficiente', {
+          description: `Você precisa de ${product.points} pontos para este produto.`
+        })
+      } else {
+        toast.error('Erro ao processar compra', {
+          description: result.message
+        })
+      }
+    } catch (error) {
+      toast.error('Erro ao processar compra', {
+        description: 'Ocorreu um erro ao processar sua compra. Tente novamente.'
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <Card className="overflow-hidden flex flex-col transition-colors duration-200 hover:bg-muted/90 dark:hover:bg-muted/10">
@@ -77,18 +131,61 @@ export function ProductCard({ product }: { product: Product }) {
         <Dialog open={purchaseModalOpen} onOpenChange={setPurchaseModalOpen}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>{t('featureInDevelopment')}</DialogTitle>
+              <DialogTitle>Confirmar Compra</DialogTitle>
               <DialogDescription>
-                {t('purchaseDescription')}
+                Você está prestes a realizar uma compra no valor de {product.points} pontos.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex justify-center items-center py-4">
-              <FaShoppingCart className="h-20 w-20 text-muted-foreground" />
+            
+            <div className="flex gap-4 py-4">
+              {/* Miniatura do produto */}
+              <div className="relative w-20 h-20 rounded overflow-hidden flex-shrink-0">
+                <Image
+                  src={product.productImage || "https://res.cloudinary.com/dnuayiowd/image/upload/v1745704616/CAMISA_weqfor.png"}
+                  alt={product.name}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              
+              {/* Informações do produto */}
+              <div>
+                <h3 className="font-medium">{product.name}</h3>
+                <div className="flex items-center mt-1">
+                  <FaCoins className="h-4 w-4 mr-1 text-amber-500" />
+                  <span className="text-amber-600 dark:text-amber-500 font-medium">{product.points} pontos</span>
+                </div>
+              </div>
             </div>
-            <DialogFooter>
+            
+            <div className="space-y-3">
+              <label htmlFor="contactInfo" className="text-sm font-medium">
+                Informe a melhor forma de contato
+              </label>
+              <Textarea
+                id="contactInfo"
+                placeholder="Ex: Instagram @usuario, Email: email@exemplo.com, WhatsApp: (00) 12345-6789"
+                value={contactInfo}
+                onChange={(e) => setContactInfo(e.target.value)}
+                className="min-h-[80px]"
+              />
+              <p className="text-xs text-muted-foreground">
+                Nossa equipe entrará em contato para concluir sua compra.
+              </p>
+            </div>
+            
+            <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0">
               <DialogClose asChild>
-                <Button>{t('close')}</Button>
+                <Button variant="outline">Cancelar</Button>
               </DialogClose>
+              <Button 
+                onClick={handlePurchase} 
+                className="flex items-center"
+                disabled={isLoading}
+              >
+                <FaShoppingCart className="h-4 w-4 mr-2" />
+                <span>Comprar</span>
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
