@@ -78,7 +78,7 @@ export function ProductCard({ product }: { product: Product }) {
           description: result.message
         })
       }
-    } catch (error) {
+    } catch {
       toast.error('Erro ao processar compra', {
         description: 'Ocorreu um erro ao processar sua compra. Tente novamente.'
       })
