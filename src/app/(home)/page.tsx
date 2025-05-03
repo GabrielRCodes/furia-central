@@ -2,115 +2,85 @@ import { getTranslations } from 'next-intl/server'
 import { NavigationTabs } from '@/components/NavigationTabs'
 import { PostCard, type Post } from '@/app/(home)/components/PostCard'
 import { RefreshButton } from '@/components/RefreshButton';
+import { auth } from '@/libs/auth';
+import { LoginButton } from '@/components/LoginButton';
 
 const posts: Post[] = [
   {
-    id: '1',
-    author: 'FURIA CS:GO',
-    content: 'Nossa equipe está em preparação para o próximo torneio! Fiquem ligados para mais atualizações e informações sobre horários dos jogos.',
-    timestamp: '1h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
+    author: 'FURIA',
+    content: `Roma caiu. #FURIALoL 2x0, no topo do grupo B da #LTASul 🫡 #DIADEFURIA`,
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746297189/POST_2_a5lugo.jpg',
+    url: 'https://x.com/FURIA/status/1918734893925695952',
     socialMedia: 'twitter',
-    socialHandle: 'FURIA_CSGO'
+    socialHandle: 'FURIA',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '2',
-    author: 'FURIA Valorant',
-    content: 'Grande vitória hoje! Agradecemos a todos que torceram e apoiaram nosso time durante a partida.',
-    timestamp: '3h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'instagram',
-    socialHandle: 'FURIA_VAL'
-  },
-  {
-    id: '3',
-    author: 'FURIA Academy',
-    content: 'Estamos recrutando novos talentos! Se você tem o que é preciso para se juntar a FURIA, envie sua inscrição hoje mesmo.',
-    timestamp: '5h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'youtube',
-    socialHandle: 'FURIA_Academy'
-  },
-  {
-    id: '4',
-    author: 'FURIA Official',
-    content: 'Novos produtos chegando em nossa loja! Camisetas, moletons e muito mais. Não perca!',
-    timestamp: '8h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'twitch',
-    socialHandle: 'FURIA_TV'
-  },
-  {
-    id: '5',
-    author: 'FURIA Creators',
-    content: 'Confira nossa nova série de conteúdo exclusivo nos bastidores da equipe. Acesse nosso canal e não perca nenhum episódio!',
-    timestamp: '12h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'tiktok',
-    socialHandle: 'FURIA_TikTok'
-  },
-  {
-    id: '6',
-    author: 'FURIA Community',
-    content: 'Evento para fãs confirmado para o próximo mês! Encontre seus jogadores favoritos e participe de atividades exclusivas.',
-    timestamp: '1d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
+    author: 'FURIA',
+    content: 'Nossa equipe está em preparação para o próximo torneio! Fiquem ligados para mais atualizações em https://furia.gg e informações sobre horários dos jogos. #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746297076/POST_1_fkqlc9.jpg',
+    url: 'https://x.com/FURIA/status/1918679600369905668',
     socialMedia: 'twitter',
-    socialHandle: 'FURIA_Community'
+    socialHandle: 'FURIA',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '7',
-    author: 'FURIA Partners',
-    content: 'Estamos orgulhosos de anunciar nossa mais nova parceria! Fiquem atentos para promoções exclusivas em breve.',
-    timestamp: '1d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'instagram',
-    socialHandle: 'FURIA_Partners'
+    author: 'Gabriel Toledo',
+    content: `
+      Parabens @linfnx! Saudades meu amigo
+      Espero que esteja bem e curtindo os desafios que a vida lhe apresenta neste novo ano pra vc.
+      Tmj feliz aniversário ❤️🤞🏻💪
+    `,
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746297611/POST_3_fpi7g1.jpg',
+    url: 'https://x.com/FalleNCS/status/1885090986163937602',
+    socialMedia: 'twitter',
+    socialHandle: 'FalleNCS',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746297788/FALLEN_fgummz.jpg'
   },
   {
-    id: '8',
-    author: 'FURIA Esports',
-    content: 'Celebrando mais uma conquista importante! Obrigado a todos pelo apoio contínuo à nossa organização.',
-    timestamp: '2d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'youtube',
-    socialHandle: 'FURIA_Esports'
+    author: 'chelok1ng',
+    content: `playing faceit with @FalleNCS @yuurih @siddecs https://twitch.tv/chelok1ng https://twitch.tv/chelok1ng`,
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746298537/CHELO_2_x148d2.jpg',
+    url: 'https://x.com/chelok1ng/status/1882529838789267636',
+    socialMedia: 'twitter',
+    socialHandle: 'chelok1ng',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746298535/CHELO_us6mxz.jpg'
   },
   {
-    id: '9',
-    author: 'FURIA Staff',
-    content: 'Bastidores da nossa preparação para o campeonato mundial. Nossa equipe está focada e determinada!',
-    timestamp: '3d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'twitch',
-    socialHandle: 'FURIA_Staff'
+    author: 'FURIA',
+    content: `Boa noite, China 🇨🇳 Bom dia, Brasil 🇧🇷 Vamos para o dia 2 da Finals Stage da PGS7? VEM QUE A #FURIAPUBG TÁ AO VIVO! 🟣/pubg_br`,
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746299774/PUBG_f7dkns.jpg',
+    url: 'https://x.com/FURIA/status/1918606870425854407',
+    socialMedia: 'twitter',
+    socialHandle: 'FURIA',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '10',
-    author: 'FURIA News',
-    content: 'Entrevista exclusiva com nosso capitão. Confira as expectativas para a próxima temporada e os planos para o futuro.',
-    timestamp: '4d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    socialMedia: 'tiktok',
-    socialHandle: 'FURIA_News'
-  }
+    author: 'FURIA Lostt',
+    content: `Entrosamento a mais sempre né 😝`,
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746299270/LOSTT_POST_o8jwa8.jpg',
+    url: 'https://x.com/Losttrl/status/1905710202055545332',
+    socialMedia: 'twitter',
+    socialHandle: 'Losttrl',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746299270/LOSTT_AVATAR_dgnfeu.jpg'
+  },
 ];
 
 export default async function Home() {
   const t = await getTranslations('Timeline');
+  const session = await auth();
+  const isAuthenticated = !!session;
+
+  // Função para gerar uma key única para cada post com base em suas propriedades
+  const generatePostKey = (post: Post) => {
+    return `${post.author}-${post.socialHandle}-${post.url.slice(-10)}`;
+  };
+
+  // Posts a serem exibidos com base no estado de autenticação
+  const visiblePosts = isAuthenticated ? posts : posts.slice(0, 3);
 
   return (
-    <div className="container max-w-7xl mx-auto py-6 px-3">
+    <div className="container max-w-7xl mx-auto py-6 px-3 space-y-6">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">{t('title')}</h1>
@@ -122,10 +92,27 @@ export default async function Home() {
       <NavigationTabs />
       
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+        {visiblePosts.map((post) => (
+          <PostCard key={generatePostKey(post)} post={post} />
         ))}
       </div>
+
+      {/* Botão de login para usuários não autenticados */}
+      {!isAuthenticated && (
+        <div className="bg-card text-card-foreground rounded-xl border shadow-sm overflow-hidden">
+          <div className="p-6 text-center">
+            <div className="max-w-lg mx-auto space-y-4">
+              <h3 className="text-lg font-medium">{t('loginPromptTitle')}</h3>
+              <p className="text-muted-foreground">
+                {t('loginPromptDescription')}
+              </p>
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <LoginButton label={t('login')} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

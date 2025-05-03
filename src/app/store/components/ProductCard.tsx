@@ -17,6 +17,7 @@ import {
   DialogHeader
 } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export interface Product {
   id: string
@@ -30,6 +31,7 @@ export function ProductCard({ product }: { product: Product }) {
   const [contentModalOpen, setContentModalOpen] = useState(false)
   const [imageModalOpen, setImageModalOpen] = useState(false)
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false)
+  const t = useTranslations('Timeline')
   
   const productUrl = product.productUrl || "https://www.furia.gg/produto/camiseta-oficial-furia-adidas-preta-150265"
 
@@ -97,9 +99,9 @@ export function ProductCard({ product }: { product: Product }) {
         <Dialog open={purchaseModalOpen} onOpenChange={setPurchaseModalOpen}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Recurso em desenvolvimento</DialogTitle>
+              <DialogTitle>{t('featureInDevelopment')}</DialogTitle>
               <DialogDescription>
-                O sistema de compras ainda está em desenvolvimento. Em breve será possível adquirir produtos oficiais da FURIA diretamente pelo FURIA Central.
+                {t('purchaseDescription')}
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-center items-center py-4">
@@ -107,7 +109,7 @@ export function ProductCard({ product }: { product: Product }) {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button>Fechar</Button>
+                <Button>{t('close')}</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
@@ -118,12 +120,12 @@ export function ProductCard({ product }: { product: Product }) {
         <Button variant="outline" size="default" asChild className="flex items-center justify-center w-full">
           <Link href={productUrl} target="_blank" className="flex items-center justify-center">
             <FaExternalLinkAlt className="h-4 w-4 mr-2" />
-            <span>Ver mais</span>
+            <span>{t('seeMore')}</span>
           </Link>
         </Button>
         <Button variant="outline" size="default" className="flex items-center justify-center w-full" onClick={() => setPurchaseModalOpen(true)}>
           <FaShoppingCart className="h-4 w-4 mr-2" />
-          <span>Comprar</span>
+          <span>{t('buy')}</span>
         </Button>
       </CardFooter>
     </Card>

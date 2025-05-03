@@ -358,7 +358,18 @@
     "gamesTitle": "Jogos",
     "gamesDescription": "Fique por dentro das partidas e competições",
     "storeTitle": "Loja",
-    "storeDescription": "Produtos oficiais da FURIA"
+    "storeDescription": "Produtos oficiais da FURIA",
+    "loginPrompt": "Faça login para ver mais publicações",
+    "login": "Entrar na plataforma",
+    "loginPromptTitle": "Acesso exclusivo para membros FURIA",
+    "loginPromptDescription": "Faça login para desbloquear todas as publicações, interagir com a comunidade e aproveitar recursos exclusivos da plataforma. Membros verificados têm acesso a conteúdo adicional, promoções especiais e muito mais.",
+    "share": "Compartilhar",
+    "visit": "Visitar",
+    "seeMore": "Ver mais",
+    "buy": "Comprar",
+    "featureInDevelopment": "Recurso em desenvolvimento",
+    "purchaseDescription": "O sistema de compras ainda está em desenvolvimento. Em breve será possível adquirir produtos oficiais da FURIA diretamente pelo FURIA Central.",
+    "close": "Fechar"
   },
   "Community": {
     "title": "Chat da Comunidade",

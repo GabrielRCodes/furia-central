@@ -2,135 +2,75 @@ import { getTranslations } from 'next-intl/server'
 import { NavigationTabs } from '@/components/NavigationTabs'
 import { GameCard, type GamePost } from '@/app/games/components/GameCard'
 import { RefreshButton } from '@/components/RefreshButton';
+import { auth } from '@/libs/auth';
+import { LoginButton } from '@/components/LoginButton';
 
 const gamePosts: GamePost[] = [
   {
-    id: '1',
-    championshipName: 'ESL Pro League',
-    content: 'Nossa equipe está em preparação para o próximo torneio! Fiquem ligados para mais atualizações e informações sobre horários dos jogos.',
-    timestamp: '1h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'csgo',
-    gameName: 'CS:GO'
+    championshipName: 'FURIA vs The MongolZ',
+    content: 'Não perca nossa próxima partida! A FURIA está se preparando com estratégias intensivas e treinos dedicados. Acompanhe nossa jornada neste torneio e apoie nosso time durante esta importante competição. Fique atento às atualizações em nossas redes sociais para horários e destaques! #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746300859/CS2_m7zmli.webp',
+    url: 'https://www.hltv.org/matches/2382203/the-mongolz-vs-furia-pgl-astana-2025',
+    gameName: 'Counter-Strike 2',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '2',
-    championshipName: 'VALORANT Champions Tour',
-    content: 'Grande vitória hoje! Agradecemos a todos que torceram e apoiaram nosso time durante a partida.',
-    timestamp: '3h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'valorant',
-    gameName: 'VALORANT'
+    championshipName: 'FURIA vs FLUXO',
+    content: 'Não perca nossa próxima partida! A FURIA está se preparando com estratégias intensivas e treinos dedicados. Acompanhe nossa jornada neste torneio e apoie nosso time durante esta importante competição. Fique atento às atualizações em nossas redes sociais para horários e destaques! #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746301553/LOL600X900_ynfpuh.png',
+    url: 'https://www.flashscore.com.br/equipe/furia-esports-league-of-legends/Msu28Ozt/',
+    gameName: 'League of Legends',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '3',
-    championshipName: 'League of Legends Championship',
-    content: 'Estamos recrutando novos talentos! Se você tem o que é preciso para se juntar a FURIA, envie sua inscrição hoje mesmo.',
-    timestamp: '5h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'lol',
-    gameName: 'League of Legends'
+    championshipName: 'FURIA vs MIBR',
+    content: 'Não perca nossa próxima partida! A FURIA está se preparando com estratégias intensivas e treinos dedicados. Acompanhe nossa jornada neste torneio e apoie nosso time durante esta importante competição. Fique atento às atualizações em nossas redes sociais para horários e destaques! #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746301896/VALORANTCORRECTED_amvn4x.jpg',
+    url: 'https://www.vlr.gg/459542/mibr-vs-furia-champions-tour-2025-americas-stage-1-w5',
+    gameName: 'VALORANT',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '4',
-    championshipName: 'Fortnite World Cup',
-    content: 'Novos eventos chegando! Fique atento para os anúncios oficiais e não perca a chance de participar.',
-    timestamp: '8h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'fortnite',
-    gameName: 'Fortnite'
+    championshipName: 'FURIA vs Elevate',
+    content: 'Não perca nossa próxima partida! A FURIA está se preparando com estratégias intensivas e treinos dedicados. Acompanhe nossa jornada neste torneio e apoie nosso time durante esta importante competição. Fique atento às atualizações em nossas redes sociais para horários e destaques! #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746301854/RAINBOWSIX600X900_iwjxdi.png',
+    url: 'https://egamersworld.com/rainbowsix/match/wdyv4y-Mf/furia-vs-elevate-2_WUL2Yd3',
+    gameName: 'Rainbow Six Siege',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '5',
-    championshipName: 'Six Invitational',
-    content: 'Confira nossa estratégia para o próximo campeonato. Estamos focados em trazer o melhor desempenho possível!',
-    timestamp: '12h',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'rainbow6',
-    gameName: 'Rainbow Six Siege'
+    championshipName: 'PUBG Global Series 8 2025',
+    content: 'Não perca nossa próxima partida! A FURIA está se preparando com estratégias intensivas e treinos dedicados. Acompanhe nossa jornada neste torneio e apoie nosso time durante esta importante competição. Fique atento às atualizações em nossas redes sociais para horários e destaques! #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746302203/PUBG600X900_r3yu6i.png',
+    url: 'https://egamersworld.com/pubg/event/pubg-global-series-8-2025--o6Bini6y',
+    gameName: 'PUBG',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   },
   {
-    id: '6',
-    championshipName: 'BLAST Premier',
-    content: 'Evento confirmado para o próximo mês! Encontre seus jogadores favoritos e participe de atividades exclusivas.',
-    timestamp: '1d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'csgo',
-    gameName: 'CS:GO'
-  },
-  {
-    id: '7',
-    championshipName: 'VALORANT Game Changers',
-    content: 'Estamos orgulhosos de anunciar nossa mais nova equipe! Fiquem atentos para conhecer os novos jogadores.',
-    timestamp: '1d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'valorant',
-    gameName: 'VALORANT'
-  },
-  {
-    id: '8',
-    championshipName: 'LCS Summer Split',
-    content: 'Celebrando mais uma conquista importante! Obrigado a todos pelo apoio contínuo à nossa organização.',
-    timestamp: '2d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'lol',
-    gameName: 'League of Legends'
-  },
-  {
-    id: '9',
-    championshipName: 'Fortnite Champion Series',
-    content: 'Bastidores da nossa preparação para o campeonato mundial. Nossa equipe está focada e determinada!',
-    timestamp: '3d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'fortnite',
-    gameName: 'Fortnite'
-  },
-  {
-    id: '10',
-    championshipName: 'RLCS World Championship',
-    content: 'Entrevista exclusiva com nosso capitão. Confira as expectativas para a próxima temporada e os planos para o futuro.',
-    timestamp: '4d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'rocketleague',
-    gameName: 'Rocket League'
-  },
-  {
-    id: '11',
-    championshipName: 'Kings League',
-    content: 'A FURIA está se preparando para sua estreia no maior torneio de futebol 7 do mundo! Acompanhe toda a cobertura nos nossos canais oficiais.',
-    timestamp: '5d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'kings',
-    gameName: 'Futebol'
-  },
-  {
-    id: '12',
-    championshipName: 'Six Major',
-    content: 'Novos talentos serão revelados no próximo campeonato! Nossa equipe tem treinado intensamente para esse momento.',
-    timestamp: '6d',
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746200676/TEMPLATE-IMAGE_wywl1p.avif',
-    url: 'https://google.com',
-    game: 'rainbow6',
-    gameName: 'Rainbow Six Siege'
+    championshipName: 'FURIA vs Team Secret',
+    content: 'Não perca nossa próxima partida! A FURIA está se preparando com estratégias intensivas e treinos dedicados. Acompanhe nossa jornada neste torneio e apoie nosso time durante esta importante competição. Fique atento às atualizações em nossas redes sociais para horários e destaques! #GOFURIA #DIADEFURIA',
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746302462/ROCKETLEAGUE600X900_bgu5d4.jpg',
+    url: 'https://egamersworld.com/rocketleague/match/5rW-t063r/team-secret-vs-furia-esports-MOZ8niJ0P',
+    gameName: 'Rocket League',
+    avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1745531725/LOGO-MAIN_linrk0.png'
   }
 ];
 
 export default async function Games() {
   const t = await getTranslations('Timeline');
+  const session = await auth();
+  const isAuthenticated = !!session;
+
+  // Função para gerar uma key única para cada post de jogo com base em suas propriedades
+  const generateGamePostKey = (post: GamePost) => {
+    return `${post.championshipName}-${post.gameName}`;
+  };
+
+  // Posts a serem exibidos com base no estado de autenticação
+  const visiblePosts = isAuthenticated ? gamePosts : gamePosts.slice(0, 3);
 
   return (
-    <div className="container max-w-7xl mx-auto py-6 px-3">
+    <div className="container max-w-7xl mx-auto py-6 px-3 space-y-6">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">{t('gamesTitle')}</h1>
@@ -142,10 +82,27 @@ export default async function Games() {
       <NavigationTabs />
       
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {gamePosts.map((post) => (
-          <GameCard key={post.id} post={post} />
+        {visiblePosts.map((post) => (
+          <GameCard key={generateGamePostKey(post)} post={post} />
         ))}
       </div>
+
+      {/* Botão de login para usuários não autenticados */}
+      {!isAuthenticated && (
+        <div className="bg-card text-card-foreground rounded-xl border shadow-sm overflow-hidden">
+          <div className="p-6 text-center">
+            <div className="max-w-lg mx-auto space-y-4">
+              <h3 className="text-lg font-medium">{t('loginPromptTitle')}</h3>
+              <p className="text-muted-foreground">
+                {t('loginPromptDescription')}
+              </p>
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <LoginButton label={t('login')} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
