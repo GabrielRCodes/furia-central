@@ -13,7 +13,7 @@ export function RefreshButton({ label }: RefreshButtonProps) {
       variant="outline" 
       onClick={() => window.location.reload()}
       title={label}
-      className="flex items-center"
+      className="hidden md:flex items-center"
     >
       <LucideRefreshCcw className="h-4 w-4" />
     </Button>

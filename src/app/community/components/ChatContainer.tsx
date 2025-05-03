@@ -163,7 +163,7 @@ export function ChatContainer() {
         <CardContent className="p-0">
           <motion.div 
             ref={chatContainerRef}
-            className="h-[calc(100vh-510px)] md:h-[calc(100vh-500px)] overflow-y-auto bg-secondary/10 p-4 space-y-4 overflow-x-hidden"
+            className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] overflow-y-auto bg-secondary/10 p-4 space-y-4 overflow-x-hidden"
           >
             {messages.map((message) => (
               <ChatMessage

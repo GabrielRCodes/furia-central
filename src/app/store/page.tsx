@@ -2,93 +2,42 @@ import { getTranslations } from 'next-intl/server'
 import { NavigationTabs } from '@/components/NavigationTabs'
 import { ProductCard, type Product } from '@/app/store/components/ProductCard'
 import { RefreshButton } from '@/components/RefreshButton';
-
-const productUrl = "https://www.furia.gg/produto/camiseta-oficial-furia-adidas-preta-150265";
-
 const products: Product[] = [
   {
-    id: '1',
-    name: 'Camisa FURIA Oficial 2024',
-    description: 'A camisa oficial da FURIA para a temporada 2024. Tecido de alta qualidade com tecnologia DryFit para maior conforto em qualquer situação.',
-    price: 'R$ 299,90',
-    productUrl: productUrl
+    name: 'Camiseta Furia - Adidas Preta',
+    points: '5000',
+    productUrl: "https://www.furia.gg/produto/camiseta-furia-adidas-preta-150263",
+    productImage: "https://res.cloudinary.com/dnuayiowd/image/upload/v1746306239/CAMISA1_gbr6o1.webp"
   },
   {
-    id: '2',
-    name: 'Moletom FURIA Edição Especial',
-    description: 'Moletom exclusivo FURIA com capuz e estampa especial comemorativa. Material de alta qualidade para os dias mais frios.',
-    price: 'R$ 349,90',
-    productUrl: productUrl
+    name: 'Sacochila Furia Preta',
+    points: '4500',
+    productUrl: "https://www.furia.gg/produto/sacochila-furia-preta-150267",
+    productImage: "https://res.cloudinary.com/dnuayiowd/image/upload/v1746306961/MOCHILA1_mgcghm.webp"
   },
   {
-    id: '3',
-    name: 'Boné FURIA Pro Player',
-    description: 'O mesmo boné utilizado pelos jogadores profissionais da FURIA. Ajuste snapback e logo bordado em relevo.',
-    price: 'R$ 159,90',
-    productUrl: productUrl
+    name: 'Calça Furia Future Is Black Preta',
+    points: '5000',
+    productUrl: "https://www.furia.gg/produto/calca-furia-future-is-black-preta-150143",
+    productImage: "https://res.cloudinary.com/dnuayiowd/image/upload/v1746307184/CALCA1_swcwne.webp"
   },
   {
-    id: '4',
-    name: 'Mousepad FURIA XL',
-    description: 'Mousepad de tamanho extra grande com superfície de alta precisão. Bordas reforçadas e base antiderrapante.',
-    price: 'R$ 129,90',
-    productUrl: productUrl
+    name: `Camiseta Furia Oficial '24 Preta`,
+    points: '5000',
+    productUrl: "https://www.furia.gg/produto/camiseta-furia-oficial-24-preta-150177",
+    productImage: "https://res.cloudinary.com/dnuayiowd/image/upload/v1746307316/CAMISA2_rofw34.webp"
   },
   {
-    id: '5',
-    name: 'Camiseta FURIA Lifestyle',
-    description: 'Camiseta casual com design exclusivo para o dia a dia. Algodão premium com estampa de alta durabilidade.',
-    price: 'R$ 149,90',
-    productUrl: productUrl
+    name: `Jaqueta Furia x Zor Preta`,
+    points: '5000',
+    productUrl: "https://www.furia.gg/produto/jaqueta-furia-x-zor-preta-150245",
+    productImage: "https://res.cloudinary.com/dnuayiowd/image/upload/v1746307369/JAQUETA1_ragbm6.webp"
   },
   {
-    id: '6',
-    name: 'Short FURIA Performance',
-    description: 'Short esportivo de alta performance, ideal para atividades físicas e gaming. Material leve e respirável.',
-    price: 'R$ 179,90',
-    productUrl: productUrl
-  },
-  {
-    id: '7',
-    name: 'Garrafa Térmica FURIA',
-    description: 'Garrafa térmica com isolamento a vácuo para manter seus líquidos na temperatura ideal por até 12 horas.',
-    price: 'R$ 99,90',
-    productUrl: productUrl
-  },
-  {
-    id: '8',
-    name: 'Máscara FURIA',
-    description: 'Máscara de proteção com tecido duplo e logo da FURIA. Confortável e ajustável para o uso diário.',
-    price: 'R$ 39,90',
-    productUrl: productUrl
-  },
-  {
-    id: '9',
-    name: 'Caneca FURIA Championship',
-    description: 'Caneca comemorativa das conquistas da FURIA nos campeonatos mundiais. Cerâmica de alta qualidade com design exclusivo.',
-    price: 'R$ 69,90',
-    productUrl: productUrl
-  },
-  {
-    id: '10',
-    name: 'Meia FURIA Pro',
-    description: 'Meia cano médio com tecnologia anti-odor e compressão moderada. Conforto durante longas sessões de jogo.',
-    price: 'R$ 59,90',
-    productUrl: productUrl
-  },
-  {
-    id: '11',
-    name: 'Jaqueta FURIA Bomber',
-    description: 'Jaqueta estilo bomber com detalhes exclusivos da FURIA. Ideal para as temporadas mais frias do ano.',
-    price: 'R$ 399,90',
-    productUrl: productUrl
-  },
-  {
-    id: '12',
-    name: 'Chaveiro FURIA Metal',
-    description: 'Chaveiro em metal premium com o logo da FURIA. Acabamento polido e resistente para o uso diário.',
-    price: 'R$ 49,90',
-    productUrl: productUrl
+    name: `Oversized Furia x Zor Verde Estonada`,
+    points: '5000',
+    productUrl: "https://console.cloudinary.com/app/c-543f9968cde7907afb7875ab3bd399/assets/media_library/search?q=&view_mode=mosaic",
+    productImage: "https://res.cloudinary.com/dnuayiowd/image/upload/v1746307637/CAMISA4_wl4efw.webp"
   }
 ];
 
@@ -108,8 +57,11 @@ export default async function Store() {
       <NavigationTabs />
       
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {products.map((product, index) => (
+          <ProductCard 
+            key={`${product.name.replace(/\s+/g, '-')}-${index}`} 
+            product={product} 
+          />
         ))}
       </div>
     </div>

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { FaShoppingCart, FaExternalLinkAlt } from 'react-icons/fa'
+import { FaShoppingCart, FaExternalLinkAlt, FaCoins } from 'react-icons/fa'
 import { useState } from 'react'
 import {
   Dialog,
@@ -18,50 +18,27 @@ import {
 } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { toast } from 'sonner'
 
 export interface Product {
-  id: string
   name: string
-  description: string
-  price: string
+  points: string
   productUrl?: string
+  productImage?: string
 }
 
 export function ProductCard({ product }: { product: Product }) {
-  const [contentModalOpen, setContentModalOpen] = useState(false)
   const [imageModalOpen, setImageModalOpen] = useState(false)
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false)
   const t = useTranslations('Timeline')
   
-  const productUrl = product.productUrl || "https://www.furia.gg/produto/camiseta-oficial-furia-adidas-preta-150265"
+  const productUrl = product.productUrl || "https://www.furia.gg/produto/camiseta-furia-adidas-preta-150263"
 
   return (
     <Card className="overflow-hidden flex flex-col transition-colors duration-200 hover:bg-muted/90 dark:hover:bg-muted/10">
-      <CardContent className="px-6 flex-grow flex flex-col pt-6">
+      <CardContent className="px-6 flex-grow flex flex-col">
         <div className="mb-3 text-center">
-          <h3 className="font-semibold text-lg">{product.name}</h3>
+          <h3 className="font-semibold text-lg line-clamp-1">{product.name}</h3>
         </div>
-        
-        {/* Content with Modal */}
-        <Dialog open={contentModalOpen} onOpenChange={setContentModalOpen}>
-          <DialogTrigger asChild>
-            <div className="mb-3 bg-accent/30 p-3 rounded-md h-24 overflow-y-auto cursor-pointer hover:bg-accent/50 transition-colors">
-              <p className="line-clamp-3">{product.description}</p>
-            </div>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogTitle className="sr-only">Descrição do produto: {product.name}</DialogTitle>
-            <div className="space-y-4">
-              <div className="flex items-center justify-center">
-                <h3 className="font-semibold text-lg">{product.name}</h3>
-              </div>
-              <div className="bg-accent/20 p-4 rounded-md max-h-[300px] overflow-y-auto">
-                <p>{product.description}</p>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
         
         {/* Image with Modal */}
         <Dialog open={imageModalOpen} onOpenChange={setImageModalOpen}>
@@ -69,7 +46,7 @@ export function ProductCard({ product }: { product: Product }) {
             <div className="mt-2 cursor-pointer">
               <div className="relative rounded-lg overflow-hidden h-[350px] md:h-[350px] w-full">
                 <Image
-                  src="https://res.cloudinary.com/dnuayiowd/image/upload/v1745704616/CAMISA_weqfor.png"
+                  src={product.productImage || "https://res.cloudinary.com/dnuayiowd/image/upload/v1745704616/CAMISA_weqfor.png"}
                   alt={product.name}
                   fill
                   style={{ objectFit: 'cover' }}
@@ -85,7 +62,7 @@ export function ProductCard({ product }: { product: Product }) {
             <div className="relative w-full h-full overflow-hidden">
               <div className="relative h-[80vh] w-full">
                 <Image
-                  src="https://res.cloudinary.com/dnuayiowd/image/upload/v1745704616/CAMISA_weqfor.png"
+                  src={product.productImage || "https://res.cloudinary.com/dnuayiowd/image/upload/v1745704616/CAMISA_weqfor.png"}
                   alt={product.name}
                   fill
                   style={{ objectFit: 'contain' }}
@@ -117,17 +94,25 @@ export function ProductCard({ product }: { product: Product }) {
         </Dialog>
       </CardContent>
       
-      <CardFooter className="px-6 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t">
-        <Button variant="outline" size="default" asChild className="flex items-center justify-center w-full">
-          <Link href={productUrl} target="_blank" className="flex items-center justify-center">
-            <FaExternalLinkAlt className="h-4 w-4 mr-2" />
-            <span>{t('seeMore')}</span>
-          </Link>
-        </Button>
-        <Button variant="outline" size="default" className="flex items-center justify-center w-full" onClick={() => setPurchaseModalOpen(true)}>
-          <FaShoppingCart className="h-4 w-4 mr-2" />
-          <span>{t('buy')}</span>
-        </Button>
+      <CardFooter className="px-6 flex flex-col gap-4 border-t">
+        {/* Preço em pontos */}
+        <div className="w-full flex items-center justify-center py-2 bg-accent/20 rounded-md">
+          <FaCoins className="h-5 w-5 mr-2 text-amber-500" />
+          <span className="font-semibold text-amber-600 dark:text-amber-500">{product.points} pontos</span>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+          <Button variant="outline" size="default" asChild className="flex items-center justify-center w-full">
+            <Link href={productUrl} target="_blank" className="flex items-center justify-center">
+              <FaExternalLinkAlt className="h-4 w-4 mr-2" />
+              <span>{t('seeMore')}</span>
+            </Link>
+          </Button>
+          <Button variant="outline" size="default" className="flex items-center justify-center w-full" onClick={() => setPurchaseModalOpen(true)}>
+            <FaShoppingCart className="h-4 w-4 mr-2" />
+            <span>{t('buy')}</span>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   )
