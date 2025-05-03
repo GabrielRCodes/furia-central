@@ -40,7 +40,11 @@ const formatNumberToK = (number: number): string => {
   return number.toString();
 };
 
-export function HeaderActions() {
+interface HeaderActionsProps {
+  userPoints: number;
+}
+
+export function HeaderActions({ userPoints }: HeaderActionsProps) {
   const { data: session, status } = useSession();
   const { theme, setTheme } = useTheme();
   const { locale, setLocale, isLoading: isLocaleLoading } = useLocale();
@@ -54,9 +58,8 @@ export function HeaderActions() {
   const t = useTranslations('HeaderActions');
   const router = useRouter();
   
-  // Quantidade de moedas (estático por enquanto)
-  const coinsAmount = 10500;
-  const formattedCoins = formatNumberToK(coinsAmount);
+  // Formatar os pontos do usuário
+  const formattedCoins = formatNumberToK(userPoints);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -215,7 +218,7 @@ export function HeaderActions() {
               <FaCoins className="h-10 w-10 text-yellow-500" />
             </div>
             <div className="text-center">
-              <p className="text-xl font-bold">{coinsAmount.toLocaleString()}</p>
+              <p className="text-xl font-bold">{userPoints.toLocaleString()}</p>
               <p className="text-sm text-muted-foreground">
                 {t('coins.balance', { defaultValue: 'Saldo atual' })}
               </p>

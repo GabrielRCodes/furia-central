@@ -3,7 +3,11 @@
 import { HeaderActions } from '@/components/HeaderActions';
 import { usePathname } from 'next/navigation';
 
-export function StickyHeader() {
+interface StickyHeaderProps {
+  userPoints: number;
+}
+
+export function StickyHeader({ userPoints }: StickyHeaderProps) {
   const pathname = usePathname();
   
   // Não renderizar o header na página de login
@@ -20,7 +24,7 @@ export function StickyHeader() {
         </div>
         
         {/* Ações do header - lado direito */}
-        <HeaderActions />
+        <HeaderActions userPoints={userPoints} />
       </div>
     </div>
   );
