@@ -479,6 +479,28 @@
       "completeProfileRequired": "Complete suas informações pessoais",
       "completeProfileDescription": "Para finalizar seu cadastro e participar do chat, precisamos de algumas informações pessoais",
       "completeProfileButton": "Completar Perfil"
+    },
+    "profileForm": {
+      "title": "Complete seu Perfil",
+      "description": "Adicione uma foto de perfil e seu nome para finalizar seu cadastro",
+      "name": "Nome",
+      "namePlaceholder": "Digite seu nome completo",
+      "clickToUpload": "Clique para enviar uma foto",
+      "fileTooLarge": "Arquivo muito grande (máximo 5MB)",
+      "fileTypeInvalid": "Tipo de arquivo inválido (apenas imagens)",
+      "nameRequired": "Nome deve ter pelo menos 3 caracteres",
+      "imageRequired": "Avatar é obrigatório",
+      "save": "Salvar perfil",
+      "saving": "Salvando...",
+      "success": "Perfil atualizado com sucesso",
+      "error": "Erro ao atualizar perfil",
+      "validation_error": "Verifique os campos destacados",
+      "completeProfileRequired": "Complete seu perfil",
+      "completeProfileDescription": "Adicione uma foto de perfil e seu nome para finalizar seu cadastro",
+      "completeProfileButton": "Completar perfil",
+      "previewTitle": "Visualização da imagem",
+      "confirmButton": "Confirmar imagem",
+      "cancelButton": "Cancelar"
     }
   }
 } 

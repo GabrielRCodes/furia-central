@@ -32,7 +32,7 @@ export const useChat = () => {
   const pageRef = useRef<string | null>(null);
   
   // Verificar se a sessão está sendo carregada
-  const isLoading = status === 'loading';
+  const isLoading = status === 'loading' && initialLoadDone === false;
   
   // Verificar se o usuário está autenticado
   const isAuthenticated = !!session?.user;

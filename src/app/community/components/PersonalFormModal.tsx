@@ -29,22 +29,9 @@ const personalSchema = z.object({
   state: z.string().nullable().optional(),
   zipCode: z.string().nullable().optional(),
   interests: z.string().nullable().optional(),
-  twitter: z.union([
-    z.string().url().startsWith('https://twitter.com/', { message: "URL do Twitter inválida" }).optional(),
-    z.string().url().startsWith('https://x.com/', { message: "URL do Twitter inválida" }).optional(),
-    z.string().length(0).optional(),
-    z.null()
-  ]),
-  twitch: z.union([
-    z.string().url().startsWith('https://twitch.tv/', { message: "URL da Twitch inválida" }).optional(),
-    z.string().length(0).optional(),
-    z.null()
-  ]),
-  instagram: z.union([
-    z.string().url().startsWith('https://instagram.com/', { message: "URL do Instagram inválida" }).optional(),
-    z.string().length(0).optional(),
-    z.null()
-  ])
+  twitter: z.string().nullable().optional(),
+  twitch: z.string().nullable().optional(),
+  instagram: z.string().nullable().optional()
 });
 
 type PersonalFormData = z.infer<typeof personalSchema>;
@@ -289,11 +276,11 @@ export function PersonalFormModal({ isOpen, onCloseAction, onCompleteAction }: P
               <Label htmlFor="twitter">{t('twitter')}</Label>
               <Input
                 id="twitter"
-                type="url"
+                type="text"
                 value={formData.twitter || ''}
                 onChange={(e) => handleTextChange('twitter', e.target.value)}
                 className={errors.twitter ? 'border-destructive' : ''}
-                placeholder="https://twitter.com/seu_usuario ou https://x.com/seu_usuario"
+                placeholder="Seu nome de usuário do Twitter/X"
               />
               {errors.twitter && <p className="text-destructive text-xs mt-1">{errors.twitter}</p>}
             </div>
@@ -302,11 +289,11 @@ export function PersonalFormModal({ isOpen, onCloseAction, onCompleteAction }: P
               <Label htmlFor="twitch">{t('twitch')}</Label>
               <Input
                 id="twitch"
-                type="url"
+                type="text"
                 value={formData.twitch || ''}
                 onChange={(e) => handleTextChange('twitch', e.target.value)}
                 className={errors.twitch ? 'border-destructive' : ''}
-                placeholder="https://twitch.tv/seu_usuario"
+                placeholder="Seu nome de usuário da Twitch"
               />
               {errors.twitch && <p className="text-destructive text-xs mt-1">{errors.twitch}</p>}
             </div>
@@ -315,11 +302,11 @@ export function PersonalFormModal({ isOpen, onCloseAction, onCompleteAction }: P
               <Label htmlFor="instagram">{t('instagram')}</Label>
               <Input
                 id="instagram"
-                type="url"
+                type="text"
                 value={formData.instagram || ''}
                 onChange={(e) => handleTextChange('instagram', e.target.value)}
                 className={errors.instagram ? 'border-destructive' : ''}
-                placeholder="https://instagram.com/seu_usuario"
+                placeholder="Seu nome de usuário do Instagram"
               />
               {errors.instagram && <p className="text-destructive text-xs mt-1">{errors.instagram}</p>}
             </div>

@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useTranslations } from 'next-intl';
 import { LoginButton } from '@/components/LoginButton';
 import { Loader2, FileText } from 'lucide-react';
+import { FiUser } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 
@@ -14,9 +15,10 @@ import { ChatInput } from './ChatInput';
 import { ImageModal } from './ImageModal';
 import { ContactFormModal } from './ContactFormModal';
 import { PersonalFormModal } from './PersonalFormModal';
+import { ProfileFormModal } from './ProfileFormModal';
 import { SessionLoading } from './SessionLoading';
 import { useChat } from '../hooks/useChat';
-import { getContactData, getPersonalData } from '../actions';
+import { getContactData, getPersonalData, getUserProfileData } from '../actions';
 
 export function ChatContainer() {
   const { 
@@ -32,21 +34,25 @@ export function ChatContainer() {
     loadMoreMessages
   } = useChat();
   
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const t = useTranslations('Community.chat');
   const contactT = useTranslations('Community.contactForm');
   const personalT = useTranslations('Community.personalForm');
+  const profileT = useTranslations('Community.profileForm');
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const loadTriggerRef = useRef<HTMLDivElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactFormOpen, setContactFormOpen] = useState(false);
   const [personalFormOpen, setPersonalFormOpen] = useState(false);
+  const [profileFormOpen, setProfileFormOpen] = useState(false);
   const [hasContactInfo, setHasContactInfo] = useState<boolean | null>(null);
   const [hasPersonalInfo, setHasPersonalInfo] = useState<boolean | null>(null);
+  const [hasProfileInfo, setHasProfileInfo] = useState<boolean | null>(null);
   const [isCheckingInfo, setIsCheckingInfo] = useState(true);
   const [shouldAutoOpenPersonalForm, setShouldAutoOpenPersonalForm] = useState(false);
+  const [shouldAutoOpenProfileForm, setShouldAutoOpenProfileForm] = useState(false);
   
-  // Verificar se o usuário tem informações de contato e pessoais
+  // Verificar se o usuário tem informações de contato, pessoais e perfil
   useEffect(() => {
     if (!isAuthenticated) return;
     
@@ -60,10 +66,15 @@ export function ChatContainer() {
         // Verificar informações pessoais
         const personalResult = await getPersonalData();
         setHasPersonalInfo(personalResult.hasPersonalInfo);
+        
+        // Verificar informações de perfil (avatar e nome)
+        const profileResult = await getUserProfileData();
+        setHasProfileInfo(profileResult.hasProfileInfo);
       } catch (error) {
         console.error('Erro ao verificar informações do usuário:', error);
         setHasContactInfo(false);
         setHasPersonalInfo(false);
+        setHasProfileInfo(false);
       } finally {
         setIsCheckingInfo(false);
       }
@@ -119,6 +130,29 @@ export function ChatContainer() {
     setPersonalFormOpen(false);
     setHasPersonalInfo(true);
     setShouldAutoOpenPersonalForm(false);
+    
+    // Se não tiver informações de perfil, abrir formulário automaticamente
+    if (!hasProfileInfo) {
+      setShouldAutoOpenProfileForm(true);
+    }
+  };
+  
+  // Abrir formulário de perfil
+  const openProfileForm = () => {
+    setProfileFormOpen(true);
+  };
+  
+  // Fechar formulário de perfil
+  const closeProfileForm = () => {
+    setProfileFormOpen(false);
+    setShouldAutoOpenProfileForm(false);
+  };
+  
+  // Completar cadastro de perfil
+  const completeProfileForm = () => {
+    setProfileFormOpen(false);
+    setHasProfileInfo(true);
+    setShouldAutoOpenProfileForm(false);
   };
   
   // Efeito para abrir o formulário de informações pessoais automaticamente
@@ -128,6 +162,14 @@ export function ChatContainer() {
       openPersonalForm();
     }
   }, [shouldAutoOpenPersonalForm, hasContactInfo, hasPersonalInfo]);
+  
+  // Efeito para abrir o formulário de perfil automaticamente
+  // após completar o formulário de informações pessoais
+  useEffect(() => {
+    if (shouldAutoOpenProfileForm && hasPersonalInfo && !hasProfileInfo) {
+      openProfileForm();
+    }
+  }, [shouldAutoOpenProfileForm, hasPersonalInfo, hasProfileInfo]);
   
   // Configurar Intersection Observer para carregar mais mensagens automaticamente
   useEffect(() => {
@@ -158,7 +200,42 @@ export function ChatContainer() {
   }, [hasMoreMessages, isLoadingMore, loadMoreMessages, messages.length]);
   
   // Mostrar loading enquanto verifica a sessão
-  if (isLoading || isCheckingInfo) {
+  if (isLoading && status !== 'unauthenticated') {
+    return <SessionLoading />;
+  }
+
+  // Se o usuário não estiver autenticado, mostrar a tela de login
+  if (!isAuthenticated) {
+    return (
+      <Card className="w-full border shadow-md gap-0">
+        <CardHeader className="border-b px-6">
+          <CardTitle className="text-xl">{t('title')}</CardTitle>
+          <CardDescription>
+            {t('description')}
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent className="p-0">
+          <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+            <p className="text-xl font-semibold mb-2">{t('loginRequired')}</p>
+            <p className="text-muted-foreground mb-6">{t('loginDescription')}</p>
+            <LoginButton label={t('loginButton')} />
+          </div>
+        </CardContent>
+        
+        <CardFooter className="border-t px-4">
+          <ChatInput 
+            onSendMessageAction={sendTextMessage} 
+            onSendImageAction={sendImage}
+            isAuthenticated={false}
+          />
+        </CardFooter>
+      </Card>
+    );
+  }
+
+  // Se ainda estiver verificando as informações do usuário autenticado
+  if (isCheckingInfo) {
     return <SessionLoading />;
   }
 
@@ -173,78 +250,79 @@ export function ChatContainer() {
         </CardHeader>
         
         <CardContent className="p-0">
-          {isAuthenticated ? (
-            hasContactInfo && hasPersonalInfo ? (
-              <motion.div 
-                ref={chatContainerRef}
-                className="h-[calc(100vh-590px)] sm:h-[calc(100vh-570px)] md:h-[calc(100vh-530px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
-              >
-                {/* Div invisível para rolar para o final - altura garantida */}
-                <div ref={messagesEndRef} className="h-1 w-full" aria-hidden="true" />
-                
-                {messages.length === 0 && (
-                  <div className="flex items-center justify-center h-full">
-                    {/* <p className="text-muted-foreground">{t('noMessages')}</p> */}
-                  </div>
-                )}
-                
-                {error && (
-                  <div className="flex items-center justify-center p-4 text-destructive">
-                    <p>{error}</p>
-                  </div>
-                )}
-                
-                {/* Mensagens exibidas com as mais recentes embaixo */}
-                {messages.map((message) => (
-                  <ChatMessage
-                    key={message.id}
-                    message={message}
-                    onImageClickAction={handleImageClick}
-                  />
-                ))}
-                
-                {/* Elemento observável para carregar mais mensagens automaticamente */}
-                {hasMoreMessages && (
-                  <div 
-                    ref={loadTriggerRef} 
-                    className="flex justify-center py-3 mt-4 h-5"
-                  >
-                    {isLoadingMore && (
-                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                        <span>{t('loading')}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </motion.div>
-            ) : !hasContactInfo ? (
-              // Tela para completar o cadastro com informações de contato
-              <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
-                <FileText className="h-12 w-12 text-primary mb-4" />
-                <p className="text-xl font-semibold mb-2">{contactT('completeProfileRequired')}</p>
-                <p className="text-muted-foreground mb-6 max-w-md">{contactT('completeProfileDescription')}</p>
-                <Button onClick={openContactForm}>
-                  {contactT('completeProfileButton')}
-                </Button>
-              </div>
-            ) : (
-              // Tela para completar o cadastro com informações pessoais
-              <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
-                <FileText className="h-12 w-12 text-primary mb-4" />
-                <p className="text-xl font-semibold mb-2">{personalT('completeProfileRequired')}</p>
-                <p className="text-muted-foreground mb-6 max-w-md">{personalT('completeProfileDescription')}</p>
-                <Button onClick={openPersonalForm}>
-                  {personalT('completeProfileButton')}
-                </Button>
-              </div>
-            )
-          ) : (
-            // Tela para usuário não logado
+          {hasContactInfo && hasPersonalInfo && hasProfileInfo ? (
+            <motion.div 
+              ref={chatContainerRef}
+              className="h-[calc(100vh-590px)] sm:h-[calc(100vh-570px)] md:h-[calc(100vh-530px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
+            >
+              {/* Div invisível para rolar para o final - altura garantida */}
+              <div ref={messagesEndRef} className="h-1 w-full" aria-hidden="true" />
+              
+              {messages.length === 0 && (
+                <div className="flex items-center justify-center h-full">
+                  {/* <p className="text-muted-foreground">{t('noMessages')}</p> */}
+                </div>
+              )}
+              
+              {error && (
+                <div className="flex items-center justify-center p-4 text-destructive">
+                  <p>{error}</p>
+                </div>
+              )}
+              
+              {/* Mensagens exibidas com as mais recentes embaixo */}
+              {messages.map((message) => (
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  onImageClickAction={handleImageClick}
+                />
+              ))}
+              
+              {/* Elemento observável para carregar mais mensagens automaticamente */}
+              {hasMoreMessages && (
+                <div 
+                  ref={loadTriggerRef} 
+                  className="flex justify-center py-3 mt-4 h-5"
+                >
+                  {isLoadingMore && (
+                    <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <span>{t('loading')}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          ) : !hasContactInfo ? (
+            // Tela para completar o cadastro com informações de contato
             <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
-              <p className="text-xl font-semibold mb-2">{t('loginRequired')}</p>
-              <p className="text-muted-foreground mb-6">{t('loginDescription')}</p>
-              <LoginButton label={t('loginButton')} />
+              <FileText className="h-12 w-12 text-primary mb-4" />
+              <p className="text-xl font-semibold mb-2">{contactT('completeProfileRequired')}</p>
+              <p className="text-muted-foreground mb-6 max-w-md">{contactT('completeProfileDescription')}</p>
+              <Button onClick={openContactForm}>
+                {contactT('completeProfileButton')}
+              </Button>
+            </div>
+          ) : !hasPersonalInfo ? (
+            // Tela para completar o cadastro com informações pessoais
+            <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+              <FileText className="h-12 w-12 text-primary mb-4" />
+              <p className="text-xl font-semibold mb-2">{personalT('completeProfileRequired')}</p>
+              <p className="text-muted-foreground mb-6 max-w-md">{personalT('completeProfileDescription')}</p>
+              <Button onClick={openPersonalForm}>
+                {personalT('completeProfileButton')}
+              </Button>
+            </div>
+          ) : (
+            // Tela para completar o cadastro com avatar e nome
+            <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+              <FiUser className="h-12 w-12 text-primary mb-4" />
+              <p className="text-xl font-semibold mb-2">{profileT('completeProfileRequired') || 'Complete seu perfil'}</p>
+              <p className="text-muted-foreground mb-6 max-w-md">{profileT('completeProfileDescription') || 'Adicione uma foto de perfil e seu nome para finalizar seu cadastro.'}</p>
+              <Button onClick={openProfileForm}>
+                {profileT('completeProfileButton') || 'Completar perfil'}
+              </Button>
             </div>
           )}
         </CardContent>
@@ -253,7 +331,7 @@ export function ChatContainer() {
           <ChatInput 
             onSendMessageAction={sendTextMessage} 
             onSendImageAction={sendImage}
-            isAuthenticated={isAuthenticated && !!hasContactInfo && !!hasPersonalInfo}
+            isAuthenticated={isAuthenticated && !!hasContactInfo && !!hasPersonalInfo && !!hasProfileInfo}
           />
         </CardFooter>
       </Card>
@@ -277,6 +355,14 @@ export function ChatContainer() {
         isOpen={personalFormOpen}
         onCloseAction={closePersonalForm}
         onCompleteAction={completePersonalForm}
+        user={session?.user || null}
+      />
+      
+      {/* Modal de formulário de perfil (avatar e nome) */}
+      <ProfileFormModal
+        isOpen={profileFormOpen}
+        onCloseAction={closeProfileForm}
+        onCompleteAction={completeProfileForm}
         user={session?.user || null}
       />
     </>
