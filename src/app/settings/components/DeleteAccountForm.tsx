@@ -64,6 +64,8 @@ export function DeleteAccountForm() {
     
     try {
       const result = await deleteUserAccount(formData)
+
+      window.location.href = "/"
       
       // Se retornou um resultado, é porque houve um erro (senão teria redirecionado)
       if (result) {

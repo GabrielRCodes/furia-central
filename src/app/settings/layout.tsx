@@ -11,7 +11,7 @@ export default async function SettingsLayout({
 
   // Se não estiver autenticado, redirecionar para a página de login
   if (!session) {
-    redirect('/login');
+    redirect('/');
   }
 
   // Se estiver autenticado, mostrar o conteúdo da página de configurações

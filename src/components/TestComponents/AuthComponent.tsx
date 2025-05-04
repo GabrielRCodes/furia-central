@@ -17,7 +17,7 @@ export default function AuthComponent() {
   const [ avatarError, setAvatarError ] = useState(false);
 
   const handleNavigateToLogin = () => {
-    router.push('/login');
+    router.push('/');
   };
 
   const handleSignOut = async () => {
