@@ -37,21 +37,22 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  permissionLevel Int         @default(1000)
-  points Int @default(0)
-  accounts      Account[]
-  contactInfos  ContactInfos?
-  personalInfos PersonalInfos?
-  sessions      Session[]
-  shareLinks    ShareLink[]
-  chatMessages  ChatMessage[]
+  id              String         @id @default(cuid())
+  name            String?
+  email           String?        @unique
+  emailVerified   DateTime?
+  image           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  permissionLevel Int            @default(1000)
+  points          Int            @default(0)
+  accounts        Account[]
+  chatMessages    ChatMessage[]
+  Clip            Clip[]
+  contactInfos    ContactInfos?
+  personalInfos   PersonalInfos?
+  sessions        Session[]
+  shareLinks      ShareLink[]
 }
 
 model VerificationToken {
@@ -95,12 +96,12 @@ model ContactInfos {
 }
 
 model ShareLink {
-  id           String    @id @default(cuid())
-  userId       String
-  targetUrl    String
-  createdAt    DateTime  @default(now())
-  expiresAt    DateTime?
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
+  userId    String
+  targetUrl String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -109,7 +110,7 @@ model ChatMessage {
   id        String   @id @default(cuid())
   content   String   @db.Text
   userId    String
-  type      String   @default("text") // "text" ou "image"
+  type      String   @default("text")
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -117,20 +118,30 @@ model ChatMessage {
 }
 
 model PersonalInfos {
-  id          String   @id @default(cuid())
-  age         Int?
-  hasBuyed    Boolean  @default(false)
-  isCrowd     Boolean  @default(false)
-  address     String?
-  state       String?
-  zipCode     String?
-  interests   String?
-  twitter     String?
-  twitch      String?
-  instagram   String?
-  createdAt   DateTime @default(now())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  age       Int?
+  hasBuyed  Boolean  @default(false)
+  isCrowd   Boolean  @default(false)
+  address   String?
+  state     String?
+  zipCode   String?
+  interests String?
+  twitter   String?
+  twitch    String?
+  instagram String?
+  createdAt DateTime @default(now())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Clip {
+  id        String   @id
+  userId    String
+  clipUrl   String   @db.Text
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
