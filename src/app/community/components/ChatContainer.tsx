@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
 import { LoginButton } from '@/components/LoginButton';
 import { Loader2, FileText } from 'lucide-react';
@@ -208,15 +208,9 @@ export function ChatContainer() {
   if (!isAuthenticated) {
     return (
       <Card className="w-full border shadow-md gap-0">
-        <CardHeader className="border-b px-6">
-          <CardTitle className="text-xl">{t('title')}</CardTitle>
-          <CardDescription>
-            {t('description')}
-          </CardDescription>
-        </CardHeader>
         
         <CardContent className="p-0">
-          <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+          <div className="h-[calc(100vh-470px)] sm:h-[calc(100vh-470px)] md:h-[calc(100vh-460px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
             <p className="text-xl font-semibold mb-2">{t('loginRequired')}</p>
             <p className="text-muted-foreground mb-6">{t('loginDescription')}</p>
             <LoginButton label={t('loginButton')} />
@@ -242,18 +236,12 @@ export function ChatContainer() {
   return (
     <>
       <Card className="w-full border shadow-md gap-0">
-        <CardHeader className="border-b px-6">
-          <CardTitle className="text-xl">{t('title')}</CardTitle>
-          <CardDescription>
-            {t('description')}
-          </CardDescription>
-        </CardHeader>
         
         <CardContent className="p-0">
           {hasContactInfo && hasPersonalInfo && hasProfileInfo ? (
             <motion.div 
               ref={chatContainerRef}
-              className="h-[calc(100vh-590px)] sm:h-[calc(100vh-570px)] md:h-[calc(100vh-530px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
+              className="h-[calc(100vh-470px)] sm:h-[calc(100vh-470px)] md:h-[calc(100vh-460px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
             >
               {/* Div invisível para rolar para o final - altura garantida */}
               <div ref={messagesEndRef} className="h-1 w-full" aria-hidden="true" />
@@ -296,7 +284,7 @@ export function ChatContainer() {
             </motion.div>
           ) : !hasContactInfo ? (
             // Tela para completar o cadastro com informações de contato
-            <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+            <div className="h-[calc(100vh-470px)] sm:h-[calc(100vh-470px)] md:h-[calc(100vh-460px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
               <FileText className="h-12 w-12 text-primary mb-4" />
               <p className="text-xl font-semibold mb-2">{contactT('completeProfileRequired')}</p>
               <p className="text-muted-foreground mb-6 max-w-md">{contactT('completeProfileDescription')}</p>
@@ -306,7 +294,7 @@ export function ChatContainer() {
             </div>
           ) : !hasPersonalInfo ? (
             // Tela para completar o cadastro com informações pessoais
-            <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+            <div className="h-[calc(100vh-470px)] sm:h-[calc(100vh-470px)] md:h-[calc(100vh-460px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
               <FileText className="h-12 w-12 text-primary mb-4" />
               <p className="text-xl font-semibold mb-2">{personalT('completeProfileRequired')}</p>
               <p className="text-muted-foreground mb-6 max-w-md">{personalT('completeProfileDescription')}</p>
@@ -316,7 +304,7 @@ export function ChatContainer() {
             </div>
           ) : (
             // Tela para completar o cadastro com avatar e nome
-            <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+            <div className="h-[calc(100vh-470px)] sm:h-[calc(100vh-470px)] md:h-[calc(100vh-460px)]bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
               <FiUser className="h-12 w-12 text-primary mb-4" />
               <p className="text-xl font-semibold mb-2">{profileT('completeProfileRequired') || 'Complete seu perfil'}</p>
               <p className="text-muted-foreground mb-6 max-w-md">{profileT('completeProfileDescription') || 'Adicione uma foto de perfil e seu nome para finalizar seu cadastro.'}</p>

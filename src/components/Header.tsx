@@ -57,12 +57,14 @@ export function Header() {
             <span>{t('store')}</span>
           </a>
           
-          <Link 
-            href="/contact" 
+          <a 
+            href="https://furia-connect.0r1.org" 
+            target="_blank" 
+            rel="noopener noreferrer" 
             className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
           >
             <span>{t('contact')}</span>
-          </Link>
+          </a>
         </nav>
 
         {/* Versão Mobile - Apenas ícone de chat à esquerda */}
