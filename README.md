@@ -2,6 +2,10 @@
 
 Uma plataforma central para fãs da FURIA que integra conteúdo social, comunidade e experiências exclusivas.
 
+## 🚀 Deploy
+
+Acesse a versão em produção: [https://furia-central.0r1.org](https://furia-central.0r1.org)
+
 ## 📋 Sobre
 
 FURIA CENTRAL é uma plataforma abrangente desenvolvida para conectar os fãs da FURIA com seus influenciadores favoritos, eventos e produtos. Desenvolvido com tecnologias modernas como Next.js, React e Tailwind CSS.
@@ -9,7 +13,9 @@ FURIA CENTRAL é uma plataforma abrangente desenvolvida para conectar os fãs da
 ### ✨ Funcionalidades principais
 
 - Timeline integrada com postagens de todos os influenciadores da FURIA em suas redes sociais
-- Chat da comunidade em tempo real
+- Chat da comunidade em tempo real com carregamento lazy-loading das mensagens
+- Sistema de compartilhamento de links com ganho de pontos para cada acesso
+- Upload e compartilhamento de imagens no chat da comunidade
 - Loja virtual com sistema de pontos para aquisição de itens exclusivos
 - Calendário de jogos com informações sobre localização e compra de ingressos
 - Autenticação social com Google
@@ -33,6 +39,48 @@ FURIA CENTRAL é uma plataforma abrangente desenvolvida para conectar os fãs da
 - **[Zod](https://zod.dev/)** - Validação de esquemas com TypeScript para garantir integridade de dados
 - **[React Email](https://react.email/)** - Criação de emails responsivos em React
 - **[Resend](https://resend.com/)** - API para envio de emails transacionais
+- **[Pusher](https://pusher.com/)** - Serviço para mensagens em tempo real no chat da comunidade
+- **[Cloudinary](https://cloudinary.com/)** - Serviço de hospedagem e otimização de imagens compartilhadas no chat
+
+## 📱 Principais Recursos
+
+### Chat com Lazy Loading
+
+O sistema de chat implementa carregamento lazy loading para melhorar a performance:
+- Carrega apenas 15 mensagens por vez
+- Utiliza Intersection Observer para carregar mais mensagens automaticamente ao rolar
+- Reduz o consumo de dados e melhora o tempo de carregamento inicial
+
+### Sistema de Compartilhamento e Pontos
+
+A plataforma permite aos usuários ganhar pontos através de compartilhamentos:
+- Cada usuário pode gerar links únicos para compartilhar conteúdo
+- Quando alguém acessa um link compartilhado, o criador recebe pontos
+- Os pontos acumulados podem ser trocados por itens exclusivos na loja virtual
+
+### Upload e Gerenciamento de Imagens
+
+Integração com Cloudinary para gerenciar imagens no chat:
+- Upload seguro direto para o Cloudinary
+- Otimização automática de imagens para diferentes dispositivos
+- Preview das imagens antes do envio
+- Modal para visualização expandida das imagens
+
+### Comunicação em Tempo Real
+
+Integração com Pusher para comunicação em tempo real:
+- Mensagens de chat são entregues instantaneamente a todos os usuários conectados
+- Sistema de notificações para novas mensagens
+- Estado de conexão visível para o usuário
+- Rate limiting para evitar spam de mensagens
+
+### Sistema de Notificações Discord
+
+Integração com webhooks do Discord para notificações da loja:
+- Notificações automáticas enviadas para um canal no Discord quando um item é adquirido na loja
+- Detalhes da compra são formatados em um embed rico com informações do produto e do comprador
+- Sistema de fila para garantir entrega confiável de notificações mesmo em caso de picos de atividade
+- Fácil configuração através de variáveis de ambiente
 
 ## 🔒 Sistema de Cooldown
 
@@ -136,6 +184,9 @@ PUSHER_APP_ID="seu-app-id"
 PUSHER_SECRET="seu-app-secret"
 NEXT_PUBLIC_PUSHER_KEY="sua-app-key"
 NEXT_PUBLIC_PUSHER_CLUSTER="seu-cluster" # geralmente "us2" ou "eu"
+
+# Discord (para notificações da loja)
+DISCORD_STORE_WEBHOOK_URL="https://discord.com/api/webhooks/seu-id/seu-token"
 ```
 
 ### Como obter as credenciais necessárias:
@@ -195,6 +246,20 @@ NEXT_PUBLIC_PUSHER_CLUSTER="seu-cluster" # geralmente "us2" ou "eu"
    - Selecione a opção "Channels" para mensagens em tempo real
    - Após criar o app, você encontrará o App ID, Key, Secret e Cluster nas configurações do app
 
+7. **Discord (para notificações da loja)**:
+   - Abra o Discord e acesse o servidor onde deseja receber as notificações
+   - Vá até o canal onde as notificações serão enviadas
+   - Clique com o botão direito no canal e selecione "Configurações"
+   - No menu lateral, clique em "Integrações"
+   - Clique em "Webhooks" e depois em "Novo Webhook"
+   - Personalize o nome e imagem do webhook (ex: "FURIA Central - Notificações de Loja")
+   - Clique em "Copiar URL do Webhook" e adicione-o ao seu arquivo .env:
+     ```
+     DISCORD_STORE_WEBHOOK_URL="https://discord.com/api/webhooks/seu-id/seu-token"
+     ```
+   - O sistema enviará automaticamente notificações para este canal sempre que um item for adquirido na loja
+   - Importante: Mantenha esta URL segura, pois ela permite enviar mensagens para o canal sem autenticação adicional
+
 ## 🔐 Autenticação
 
 ### Provedores suportados
@@ -245,13 +310,21 @@ O projeto implementa práticas avançadas de SEO:
 
 ### Funcionalidades planejadas
 
+- **Sistema avançado de interesses do usuário**
+  
+  Implementação de um sistema mais robusto para coletar e analisar os interesses dos usuários, permitindo personalização avançada de conteúdo e recomendações baseadas em preferências individuais.
+
+- **Coleta automática de publicações de redes sociais**
+  
+  Desenvolvimento de sistema para coletar e agregar automaticamente as publicações de diferentes influenciadores da FURIA e da própria organização em diversas redes sociais, eliminando a necessidade de alimentação manual de conteúdo.
+
+- **Sistema automático de calendário de jogos**
+  
+  Implementação de sistema para coleta automática de informações sobre jogos futuros da FURIA em diferentes modalidades e competições, mantendo o calendário sempre atualizado sem intervenção manual.
+
 - **Análise de métricas de engajamento**
   
   Implementação de dashboard para visualização de métricas de utilização e engajamento dos usuários na plataforma.
-
-- **Atualização em tempo real das redes sociais**
-  
-  Implementação de sistema de atualização automática e em tempo real do conteúdo das redes sociais dos influenciadores da FURIA, eliminando a necessidade de recarregar a página para visualizar novos posts.
 
 - **Criptografia de dados sensíveis**
   
