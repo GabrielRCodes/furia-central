@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
-import { User } from '@prisma/client';
 import {
   Dialog,
   DialogContent,
