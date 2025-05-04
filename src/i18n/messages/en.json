@@ -414,19 +414,37 @@
     "linkAlreadyExists": "You already have an active link for this post."
   },
   "Community": {
-    "title": "Community Chat",
-    "description": "Chat with other FURIA members in real-time",
+    "title": "FURIA Community",
+    "description": "Connect with the FURIA community and join the discussions",
     "refresh": "Refresh",
     "chat": {
-      "title": "Conversation",
-      "description": "Be respectful with other users and do not share NSFW content.",
-      "input": {
-        "placeholder": "Type your message...",
-        "attachImage": "Attach image",
-        "send": "Send"
-      },
+      "title": "Community Chat",
+      "description": "Interact with other fans and FURIA members in real-time",
+      "inputPlaceholder": "Type your message...",
+      "send": "Send",
+      "attachImage": "Attach image",
+      "loading": "Loading messages...",
+      "noMessages": "No messages yet. Be the first to write!",
+      "loginRequired": "Login to participate",
+      "loginDescription": "To send messages in the community chat, you need to be logged in",
+      "loginButton": "Login",
+      "errorLoading": "Error loading messages",
+      "errorSending": "Error sending message",
+      "allMessagesLoaded": "All messages have been loaded",
+      "loadMore": "Load previous messages",
       "imageModal": {
-        "title": "Expanded chat image"
+        "title": "Expanded chat image",
+        "closeButton": "Close"
+      },
+      "imageConfirmModal": {
+        "title": "Confirm image upload",
+        "confirmButton": "Send image",
+        "cancelButton": "Cancel",
+        "sendingButton": "Sending..."
+      },
+      "profileModal": {
+        "title": "User Profile",
+        "description": "Community member information"
       }
     }
   }

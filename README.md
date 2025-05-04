@@ -125,6 +125,17 @@ GOOGLE_CLIENT_SECRET="seu-client-secret-do-google"
 # Resend API
 RESEND_API_KEY="re_123456789" # Sua chave API do Resend
 EMAIL_FROM="noreply@seudominio.com" # Domínio verificado no Resend
+
+# Cloudinary (para uploads de imagens)
+CLOUDINARY_CLOUD_NAME="seu_cloud_name"
+CLOUDINARY_API_KEY="sua_api_key"
+CLOUDINARY_API_SECRET="seu_api_secret"
+
+# Pusher (para chat em tempo real)
+PUSHER_APP_ID="seu-app-id"
+PUSHER_SECRET="seu-app-secret"
+NEXT_PUBLIC_PUSHER_KEY="sua-app-key"
+NEXT_PUBLIC_PUSHER_CLUSTER="seu-cluster" # geralmente "us2" ou "eu"
 ```
 
 ### Como obter as credenciais necessárias:
@@ -153,6 +164,36 @@ EMAIL_FROM="noreply@seudominio.com" # Domínio verificado no Resend
    - Navegue até a seção de API Keys no painel
    - Crie uma nova API Key e copie o valor (formato: `re_123456789...`)
    - Configure também um domínio verificado para EMAIL_FROM ou use um domínio temporário fornecido pelo Resend
+
+5. **Cloudinary (para uploads de imagens)**:
+   - Crie uma conta em [Cloudinary](https://cloudinary.com/)
+   - Após criar a conta, acesse o Dashboard do Cloudinary
+   - No painel de controle, você encontrará as seguintes informações:
+     - **Cloud Name**: Nome da sua nuvem (encontrado no canto superior direito)
+     - **API Key**: Chave de API (encontrada na seção "API Keys")
+     - **API Secret**: Segredo da API (encontrado na seção "API Keys")
+   - Passos detalhados em português:
+     1. Acesse https://cloudinary.com/ e clique em "Sign Up For Free"
+     2. Complete o cadastro e entre no painel administrativo
+     3. No menu lateral esquerdo, clique em "Dashboard"
+     4. No painel, localize as informações "API Environment Variable"
+     5. Copie os valores de "Cloud name", "API Key" e "API Secret"
+     6. Adicione essas informações ao seu arquivo .env:
+        ```
+        CLOUDINARY_CLOUD_NAME=seu_cloud_name
+        CLOUDINARY_API_KEY=sua_api_key
+        CLOUDINARY_API_SECRET=seu_api_secret
+        ```
+     7. (Opcional) Para melhor organização, crie uma pasta específica para as imagens do chat:
+        - No menu lateral do Cloudinary, vá em "Media Library"
+        - Clique em "Create folder" e crie uma pasta chamada "furia"
+        - Dentro dela, crie outra pasta chamada "chat"
+
+6. **Pusher (para chat em tempo real)**:
+   - Crie uma conta em [Pusher](https://pusher.com/)
+   - Crie um novo app no dashboard do Pusher
+   - Selecione a opção "Channels" para mensagens em tempo real
+   - Após criar o app, você encontrará o App ID, Key, Secret e Cluster nas configurações do app
 
 ## 🔐 Autenticação
 

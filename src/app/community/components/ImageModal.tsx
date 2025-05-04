@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import {
   Dialog,
+  DialogContent,
   DialogClose,
-  DialogTitle
+  DialogTitle,
 } from '@/components/ui/dialog';
-import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface ImageModalProps {
@@ -14,63 +16,47 @@ interface ImageModalProps {
   onCloseAction: () => void;
 }
 
-// Componente DialogContent customizado com Framer Motion
-const MotionDialogContent = motion(({
-  className,
-  children,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) => (
-  <div
-    className={`fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] border bg-background sm:rounded-lg ${className}`}
-    {...props}
-  >
-    {children}
-  </div>
-));
-
 export function ImageModal({ imageUrl, onCloseAction }: ImageModalProps) {
   const t = useTranslations('Community.chat.imageModal');
+  // Mantém uma cópia local da URL para evitar o colapso durante o fechamento
+  const [localImageUrl, setLocalImageUrl] = useState<string | null>(null);
+  
+  // Atualiza a URL local quando a URL externa muda
+  if (imageUrl !== null && localImageUrl !== imageUrl) {
+    setLocalImageUrl(imageUrl);
+  }
+  
+  // Limpa a URL local após fechar o modal
+  const handleClose = () => {
+    onCloseAction();
+    // Não limpa imediatamente para evitar colapso visual durante a animação
+  };
+  
+  // Uso da URL local para renderizar a imagem
+  const displayUrl = imageUrl || localImageUrl;
   
   return (
-    <Dialog open={!!imageUrl} onOpenChange={(open) => !open && onCloseAction()}>
-      <AnimatePresence mode="wait">
-        {!!imageUrl && (
-          <>
-            <motion.div 
-              className="fixed inset-0 z-50 bg-black/80"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            />
-            <MotionDialogContent
-              className="sm:max-w-[90vw] max-h-[80vh] p-0 overflow-hidden"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
-            >
-              <DialogTitle className="sr-only">{t('title')}</DialogTitle>
-              <DialogClose className="absolute right-2 top-2 z-10 bg-background rounded-full" />
-              <motion.div 
-                className="w-full h-auto max-h-[70vh] overflow-hidden p-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, delay: 0.1 }}
-              >
-                <Image
-                  src={imageUrl}
-                  alt="Expanded image"
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto max-h-[70vh] object-contain rounded-lg"
-                />
-              </motion.div>
-            </MotionDialogContent>
-          </>
+    <Dialog open={!!imageUrl} onOpenChange={(open) => !open && handleClose()}>
+      <DialogContent className="sm:max-w-4xl p-0 overflow-hidden">
+        <DialogTitle className="sr-only">{t('title')}</DialogTitle>
+        <DialogClose className="absolute right-2 top-2 z-10 rounded-full bg-black/50 text-white p-2 hover:bg-black/70">
+          <X className="h-4 w-4" />
+        </DialogClose>
+        
+        {displayUrl && (
+          <div className="relative w-full h-full overflow-hidden">
+            <div className="relative h-[80vh] w-full">
+              <Image
+                src={displayUrl}
+                alt="Expanded image"
+                fill
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+            </div>
+          </div>
         )}
-      </AnimatePresence>
+      </DialogContent>
     </Dialog>
   );
 } 

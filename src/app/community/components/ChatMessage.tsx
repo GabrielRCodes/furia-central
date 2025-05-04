@@ -3,8 +3,13 @@
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Image from 'next/image';
+import { format } from 'date-fns';
+import { useLocale } from 'next-intl';
+import { ptBR, enUS } from 'date-fns/locale';
+import { useState } from 'react';
+import { UserProfileModal } from './UserProfileModal';
 
-// Define the message interface for type safety
+// Interface para mensagem (compatibilidade com versão anterior)
 export interface Message {
   id: string;
   sender: 'user' | 'community';
@@ -12,21 +17,68 @@ export interface Message {
   avatar?: string;
   content: string;
   timestamp: string;
-  type?: 'image';
+  type?: 'image' | 'text';
 }
 
-interface ChatMessageProps {
-  message: Message;
-  userName: string;
-  userInitials: string;
+// Interface para a nova versão das mensagens do banco de dados
+export interface ChatMessageProps {
+  message: {
+    id: string;
+    content: string;
+    type?: string;
+    createdAt: Date;
+    user: {
+      id: string;
+      name: string | null;
+      image: string | null;
+    };
+    isCurrentUser?: boolean;
+  };
   onImageClickAction: (imageUrl: string) => void;
 }
 
-export function ChatMessage({ message, userName, userInitials, onImageClickAction }: ChatMessageProps) {
+export function ChatMessage({ message, onImageClickAction }: ChatMessageProps) {
+  const locale = useLocale();
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  
+  // Extração do nome e iniciais para exibição
+  const displayName = message.user?.name || 'Usuário';
+  const userInitials = displayName.split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .substring(0, 2);
+  
+  // Determinar se deve exibir a imagem do avatar
+  const hasValidImage = message.user?.image && typeof message.user.image === 'string' && message.user.image.length > 0;
+  const avatarSrc = hasValidImage ? message.user.image as string : undefined;
+  
+  // Garantir que isCurrentUser nunca seja undefined
+  const isUserMessage = message.isCurrentUser === true;
+  
+  // Formatar a data completa para o tooltip
+  const dateLocale = locale.startsWith('pt') ? ptBR : enUS;
+  const formattedDate = format(
+    new Date(message.createdAt),
+    locale.startsWith('pt') ? "d 'de' MMMM 'de' yyyy 'às' HH:mm" : "MMMM d, yyyy 'at' h:mm aaa",
+    { locale: dateLocale }
+  );
+  
+  // Abrir modal de perfil
+  const handleAvatarClick = () => {
+    setShowProfileModal(true);
+  };
+
+  // Fechar modal de perfil
+  const handleCloseProfileModal = () => {
+    setShowProfileModal(false);
+  };
+  
   return (
+    <>
     <motion.div
       className={`flex ${
-        message.sender === 'user' ? 'justify-end' : 'justify-start'
+          isUserMessage ? 'justify-end' : 'justify-start'
       } w-full`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -37,32 +89,36 @@ export function ChatMessage({ message, userName, userInitials, onImageClickActio
     >
       <motion.div
         className={`flex ${
-          message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'
+            isUserMessage ? 'flex-row-reverse' : 'flex-row'
         } max-w-[80%] gap-2 items-start`}
       >
         {/* Avatar do remetente */}
-        <div className="pt-1 flex-shrink-0">
-          <Avatar className="h-8 w-8">
-            {message.avatar ? (
-              <AvatarImage src={message.avatar} alt={message.name} />
+          <div 
+            className="pt-1 flex-shrink-0 cursor-pointer"
+            onClick={handleAvatarClick}
+          >
+            <Avatar className="h-8 w-8 hover:ring-2 hover:ring-primary/50 transition-all">
+            {hasValidImage ? (
+              <AvatarImage src={avatarSrc} alt={displayName} />
             ) : (
               <AvatarFallback>
-                {message.sender === 'user' ? userInitials : 'F'}
+                {userInitials}
               </AvatarFallback>
             )}
           </Avatar>
         </div>
         
         <div
-          className={`${
-            message.sender === 'user'
-              ? 'bg-card text-card-foreground rounded-tl-lg rounded-tr-lg rounded-bl-lg'
-              : 'bg-card text-card-foreground rounded-tl-lg rounded-tr-lg rounded-br-lg'
-          } px-3 py-2 shadow-sm overflow-hidden break-words`}
+            className={`bg-muted ${
+              isUserMessage
+                ? 'rounded-tl-lg rounded-tr-none rounded-bl-lg rounded-br-lg' // Bolha do usuário atual (ponta quadrada no canto superior direito)
+                : 'rounded-tl-none rounded-tr-lg rounded-bl-lg rounded-br-lg' // Bolha de outros usuários (ponta quadrada no canto superior esquerdo)
+            } px-3 py-2 shadow-sm overflow-hidden break-words cursor-default`}
+            title={formattedDate}
         >
           {/* Nome do remetente */}
           <div className="text-xs font-medium mb-1">
-            {message.sender === 'user' ? userName : message.name}
+            {displayName}
           </div>
           
           {message.type === 'image' ? (
@@ -81,11 +137,16 @@ export function ChatMessage({ message, userName, userInitials, onImageClickActio
           ) : (
             <p className="break-words">{message.content}</p>
           )}
-          <div className="text-xs opacity-70 mt-1 text-right">
-            {message.timestamp}
           </div>
-        </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+
+      {/* Modal de perfil */}
+      <UserProfileModal
+        isOpen={showProfileModal}
+        onCloseAction={handleCloseProfileModal}
+        userData={message.user}
+      />
+    </>
   );
 } 

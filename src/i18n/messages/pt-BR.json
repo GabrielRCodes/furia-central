@@ -382,19 +382,37 @@
     "linkAlreadyExists": "Você já tem um link ativo para esta publicação."
   },
   "Community": {
-    "title": "Chat da Comunidade",
-    "description": "Converse com outros membros da FURIA em tempo real",
+    "title": "Comunidade FURIA",
+    "description": "Conecte-se com a comunidade FURIA e participe das discussões",
     "refresh": "Atualizar",
     "chat": {
-      "title": "Conversa",
-      "description": "Tenha respeito com os outros usuários e não compartilhe conteúdo NSFW.",
-      "input": {
-        "placeholder": "Digite sua mensagem...",
-        "attachImage": "Anexar imagem",
-        "send": "Enviar"
-      },
+      "title": "Chat da Comunidade",
+      "description": "Interaja com outros fãs e membros da FURIA em tempo real",
+      "inputPlaceholder": "Digite sua mensagem...",
+      "send": "Enviar",
+      "attachImage": "Anexar imagem",
+      "loading": "Carregando mensagens...",
+      "noMessages": "Sem mensagens ainda. Seja o primeiro a escrever!",
+      "loginRequired": "Faça login para participar",
+      "loginDescription": "Para enviar mensagens no chat da comunidade, você precisa estar logado",
+      "loginButton": "Fazer login",
+      "errorLoading": "Erro ao carregar mensagens",
+      "errorSending": "Erro ao enviar mensagem",
+      "allMessagesLoaded": "Todas as mensagens foram carregadas",
+      "loadMore": "Carregar mensagens anteriores",
       "imageModal": {
-        "title": "Imagem expandida do chat"
+        "title": "Imagem expandida do chat",
+        "closeButton": "Fechar"
+      },
+      "imageConfirmModal": {
+        "title": "Confirmar envio de imagem",
+        "confirmButton": "Enviar imagem",
+        "cancelButton": "Cancelar",
+        "sendingButton": "Enviando..."
+      },
+      "profileModal": {
+        "title": "Perfil do Usuário",
+        "description": "Informações do membro da comunidade"
       }
     }
   }

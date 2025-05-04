@@ -12,7 +12,6 @@ import {
   FiChevronRight,
   FiExternalLink,
   FiHome,
-  FiUsers,
   FiMail
 } from 'react-icons/fi';
 import { SiTwitch, SiDiscord } from 'react-icons/si';
@@ -47,13 +46,6 @@ export function Header() {
         <nav className="hidden md:flex items-center space-x-3">
           <Link href="/" className="flex items-center text-foreground/70 hover:text-primary transition-colors">
             <IoGrid className="h-5 w-5 stroke-[2.5px]" aria-label={"Furia Central"} />
-          </Link>
-          
-          <Link 
-            href="/influencers" 
-            className="text-foreground/70 hover:text-primary transition-colors flex items-center gap-1"
-          >
-            <span>{t('influencers')}</span>
           </Link>
           
           <a 
@@ -131,19 +123,6 @@ export function Header() {
                   <div className="flex items-center gap-3">
                     <FiHome className="h-5 w-5 text-primary" />
                     <span className="font-medium">{t('navigation.home', { defaultValue: 'Início' })}</span>
-                  </div>
-                  <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                </Link>
-                
-                {/* Link para influencers */}
-                <Link 
-                  href="/influencers" 
-                  className="flex items-center justify-between p-3 rounded-md hover:bg-muted border border-border transition-colors group"
-                  onClick={() => setOpen(false)}
-                >
-                  <div className="flex items-center gap-3">
-                    <FiUsers className="h-5 w-5 text-primary" />
-                    <span className="font-medium">{t('influencers')}</span>
                   </div>
                   <FiChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
