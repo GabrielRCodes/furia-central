@@ -153,7 +153,10 @@ export function ContactFormModal({ isOpen, onCloseAction, onCompleteAction, user
         // Fechar modal e atualizar status
         onCompleteAction();
       } else {
-        if (result.errors) {
+        if (result.cooldown) {
+          // Mensagem de cooldown
+          toast.error(result.message || t('cooldown'));
+        } else if (result.errors) {
           // Processa erros de validação do servidor
           const serverErrors: Record<string, string> = {};
           result.errors.forEach((err: { path: string; message: string }) => {

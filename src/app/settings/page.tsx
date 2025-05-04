@@ -3,9 +3,10 @@
 import { NameForm } from "./components/NameForm";
 import { EmailForm } from "./components/EmailForm";
 import { ContactForm } from "./components/ContactForm";
+import { PersonalForm } from "./components/PersonalForm";
 import { DeleteAccountForm } from "./components/DeleteAccountForm";
 import { UserPreview } from "./components/UserPreview";
-import { getUserData, getContactData } from "./actions";
+import { getUserData, getContactData, getPersonalData } from "./actions";
 import { getTranslations } from "next-intl/server";
 
 export default async function SettingsPage() {
@@ -15,10 +16,16 @@ export default async function SettingsPage() {
   const t = await getTranslations('Settings');
   // Obter informações de contato
   const contactData = await getContactData();
+  // Obter informações pessoais
+  const personalData = await getPersonalData();
 
   // Determina se o componente ContactForm deve ser exibido
   // Ele será exibido somente se já existirem informações de contato para o usuário
   const showContactForm = contactData.exists;
+  
+  // Determina se o componente PersonalForm deve ser exibido
+  // Ele será exibido somente se já existirem informações pessoais para o usuário
+  const showPersonalForm = personalData.exists;
 
   return (
     <div className="w-full max-w-7xl mx-auto py-6 px-4 xl:px-0">
@@ -44,6 +51,15 @@ export default async function SettingsPage() {
               user={userData} 
               contactInfo={contactData.data}
               exists={showContactForm}
+            />
+          )}
+          
+          {/* Card de Informações Pessoais - mostrado apenas se existirem informações pessoais */}
+          {showPersonalForm && (
+            <PersonalForm 
+              user={userData} 
+              personalInfo={personalData.data}
+              exists={showPersonalForm}
             />
           )}
           

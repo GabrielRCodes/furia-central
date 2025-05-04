@@ -26,13 +26,9 @@ const posts: Post[] = [
   },
   {
     author: 'Gabriel Toledo',
-    content: `
-      Parabens @linfnx! Saudades meu amigo
-      Espero que esteja bem e curtindo os desafios que a vida lhe apresenta neste novo ano pra vc.
-      Tmj feliz aniversário ❤️🤞🏻💪
-    `,
-    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746297611/POST_3_fpi7g1.jpg',
-    url: 'https://x.com/FalleNCS/status/1885090986163937602',
+    content: `Vlog novo com a estreia do time Vídeo completo no yt`,
+    image: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746369768/FALLEN_POST_THUMBNAIL_zfnpst.jpg',
+    url: 'https://x.com/FalleNCS/status/1880336891507273806',
     socialMedia: 'twitter',
     socialHandle: 'FalleNCS',
     avatar: 'https://res.cloudinary.com/dnuayiowd/image/upload/v1746297788/FALLEN_fgummz.jpg'

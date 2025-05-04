@@ -324,11 +324,15 @@ O projeto implementa práticas avançadas de SEO:
 
 - **Análise de métricas de engajamento**
   
-  Implementação de dashboard para visualização de métricas de utilização e engajamento dos usuários na plataforma.
+  Implementação de dashboard para visualização de métricas de utilização e engajamento dos usuários na plataforma. Também será desenvolvido um dashboard administrativo com controle total dos serviços da FURIA, permitindo a utilização completa dos dados informados pelos usuários para análises estratégicas e tomada de decisão.
 
 - **Criptografia de dados sensíveis**
   
   Implementar sistema de criptografia para armazenamento seguro de dados pessoais sensíveis como CPF, e-mail e números de telefone. Os dados seriam armazenados de forma criptografada no banco de dados e descriptografados apenas quando necessário, garantindo maior segurança e conformidade com regulamentações de proteção de dados.
+
+- **Sistema de moderação de chat**
+
+  Implementação de um sistema completo de moderação para o chat da comunidade onde moderadores poderiam visualizar todas as mensagens em tempo real, punir usuários que violem as regras, receber e processar denúncias de mensagens inadequadas, bloquear temporariamente ou permanentemente usuários e gerar relatórios de atividade de moderação.
 
 **Observação importante:** Estas funcionalidades seriam implementadas em fases subsequentes do desenvolvimento. A versão atual constitui a base da plataforma com foco nas funcionalidades principais de integração social, comunidade, loja de pontos e informações sobre jogos.
 

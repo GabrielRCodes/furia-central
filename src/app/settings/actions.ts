@@ -21,6 +21,34 @@ const contactSchema = z.object({
     .optional()
 });
 
+// Schema para validação das informações pessoais
+const personalSchema = z.object({
+  age: z.preprocess(
+    (val) => val === '' ? null : Number(val),
+    z.number().min(13, { message: "Idade deve ser maior que 13 anos" }).nullable()
+  ),
+  address: z.string().nullable().optional(),
+  state: z.string().nullable().optional(),
+  zipCode: z.string().nullable().optional(),
+  interests: z.string().nullable().optional(),
+  twitter: z.union([
+    z.string().url().startsWith('https://twitter.com/', { message: "URL do Twitter inválida" }).optional(),
+    z.string().url().startsWith('https://x.com/', { message: "URL do Twitter inválida" }).optional(),
+    z.string().length(0).optional(),
+    z.null()
+  ]),
+  twitch: z.union([
+    z.string().url().startsWith('https://twitch.tv/', { message: "URL da Twitch inválida" }).optional(),
+    z.string().length(0).optional(),
+    z.null()
+  ]),
+  instagram: z.union([
+    z.string().url().startsWith('https://instagram.com/', { message: "URL do Instagram inválida" }).optional(),
+    z.string().length(0).optional(),
+    z.null()
+  ])
+});
+
 // Schemas de validação com Zod
 const nameSchema = z.object({
   name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres").max(50, "Nome deve ter no máximo 50 caracteres").trim()
@@ -95,6 +123,53 @@ export async function getContactData() {
     return {
       status: 500,
       message: "Erro ao buscar informações de contato",
+      exists: false,
+      data: null
+    }
+  }
+}
+
+// Obtém as informações pessoais do usuário logado
+export async function getPersonalData() {
+  try {
+    const session = await auth()
+    
+    if (!session || !session.user || !session.user.id) {
+      return {
+        status: 401,
+        message: "Usuário não autenticado",
+        exists: false,
+        data: null
+      }
+    }
+
+    // Verificar se existe registro para este usuário
+    const personalInfo = await prisma.personalInfos.findUnique({
+      where: {
+        userId: session.user.id
+      }
+    })
+
+    if (personalInfo) {
+      return {
+        status: 200,
+        message: "Informações pessoais encontradas",
+        exists: true,
+        data: personalInfo
+      }
+    } else {
+      return {
+        status: 200,
+        message: "Informações pessoais não encontradas",
+        exists: false,
+        data: null
+      }
+    }
+  } catch (error) {
+    console.error("Erro ao buscar informações pessoais:", error)
+    return {
+      status: 500,
+      message: "Erro ao buscar informações pessoais",
       exists: false,
       data: null
     }
@@ -295,5 +370,118 @@ export async function updateContactInfo(formData: FormData) {
   } catch (error) {
     console.error("Erro ao atualizar informações de contato:", error);
     return { success: false, message: "Erro ao atualizar informações de contato" };
+  }
+}
+
+// Função para atualizar informações pessoais
+export async function updatePersonalInfo(formData: FormData) {
+  const session = await auth();
+  
+  if (!session?.user?.id) {
+    return { success: false, message: "Usuário não autenticado" };
+  }
+  
+  // Extrair dados do formulário
+  const age = formData.get("age") as string;
+  const address = formData.get("address") as string;
+  const state = formData.get("state") as string;
+  const zipCode = formData.get("zipCode") as string;
+  const interests = formData.get("interests") as string;
+  const twitter = formData.get("twitter") as string;
+  const twitch = formData.get("twitch") as string;
+  const instagram = formData.get("instagram") as string;
+  
+  // Validação com Zod
+  const validationResult = personalSchema.safeParse({ 
+    age, 
+    address, 
+    state, 
+    zipCode, 
+    interests, 
+    twitter, 
+    twitch, 
+    instagram 
+  });
+  
+  if (!validationResult.success) {
+    // Retorna todos os erros de validação em um objeto
+    const errorMessages = validationResult.error.errors.map(error => ({
+      path: error.path.join('.'),
+      message: error.message
+    }));
+    
+    return { 
+      success: false, 
+      message: "Erro na validação dos dados", 
+      errors: errorMessages 
+    };
+  }
+  
+  // Dados validados
+  const validatedData = validationResult.data;
+  
+  // Verificar se o usuário pode realizar esta ação (usando CacheIDManager)
+  const cacheResult = await CacheIDManager({
+    type: "update_personal_info",
+    waitTime: 86400 // 1 dia em segundos (24 * 60 * 60)
+  });
+
+  if (cacheResult.status !== 200) {
+    return { 
+      success: false, 
+      message: cacheResult.message,
+      cooldown: true
+    };
+  }
+  
+  try {
+    // Verificar se já existe um registro para este usuário
+    const existingPersonal = await prisma.personalInfos.findUnique({
+      where: {
+        userId: session.user.id
+      }
+    });
+    
+    if (existingPersonal) {
+      // Atualizar registro existente, preservando os campos hasBuyed e isCrowd
+      await prisma.personalInfos.update({
+        where: {
+          userId: session.user.id
+        },
+        data: {
+          age: validatedData.age,
+          address: validatedData.address || null,
+          state: validatedData.state || null,
+          zipCode: validatedData.zipCode || null,
+          interests: validatedData.interests || null,
+          twitter: validatedData.twitter || null,
+          twitch: validatedData.twitch || null,
+          instagram: validatedData.instagram || null
+        }
+      });
+    } else {
+      // Criar novo registro (isso não deveria acontecer na edição, mas por segurança)
+      await prisma.personalInfos.create({
+        data: {
+          age: validatedData.age,
+          hasBuyed: false,
+          isCrowd: false,
+          address: validatedData.address || null,
+          state: validatedData.state || null,
+          zipCode: validatedData.zipCode || null,
+          interests: validatedData.interests || null,
+          twitter: validatedData.twitter || null,
+          twitch: validatedData.twitch || null,
+          instagram: validatedData.instagram || null,
+          userId: session.user.id
+        }
+      });
+    }
+    
+    revalidatePath("/settings", "page");
+    return { success: true, message: "Informações pessoais atualizadas com sucesso" };
+  } catch (error) {
+    console.error("Erro ao atualizar informações pessoais:", error);
+    return { success: false, message: "Erro ao atualizar informações pessoais" };
   }
 } 

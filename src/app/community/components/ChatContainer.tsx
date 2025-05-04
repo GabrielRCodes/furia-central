@@ -13,9 +13,10 @@ import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { ImageModal } from './ImageModal';
 import { ContactFormModal } from './ContactFormModal';
+import { PersonalFormModal } from './PersonalFormModal';
 import { SessionLoading } from './SessionLoading';
 import { useChat } from '../hooks/useChat';
-import { getContactData } from '../actions';
+import { getContactData, getPersonalData } from '../actions';
 
 export function ChatContainer() {
   const { 
@@ -34,31 +35,41 @@ export function ChatContainer() {
   const { data: session } = useSession();
   const t = useTranslations('Community.chat');
   const contactT = useTranslations('Community.contactForm');
+  const personalT = useTranslations('Community.personalForm');
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const loadTriggerRef = useRef<HTMLDivElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactFormOpen, setContactFormOpen] = useState(false);
+  const [personalFormOpen, setPersonalFormOpen] = useState(false);
   const [hasContactInfo, setHasContactInfo] = useState<boolean | null>(null);
-  const [isCheckingContact, setIsCheckingContact] = useState(true);
+  const [hasPersonalInfo, setHasPersonalInfo] = useState<boolean | null>(null);
+  const [isCheckingInfo, setIsCheckingInfo] = useState(true);
+  const [shouldAutoOpenPersonalForm, setShouldAutoOpenPersonalForm] = useState(false);
   
-  // Verificar se o usuário tem informações de contato
+  // Verificar se o usuário tem informações de contato e pessoais
   useEffect(() => {
     if (!isAuthenticated) return;
     
-    const checkContactData = async () => {
-      setIsCheckingContact(true);
+    const checkUserData = async () => {
+      setIsCheckingInfo(true);
       try {
-        const result = await getContactData();
-        setHasContactInfo(result.hasContactInfo);
+        // Verificar informações de contato
+        const contactResult = await getContactData();
+        setHasContactInfo(contactResult.hasContactInfo);
+        
+        // Verificar informações pessoais
+        const personalResult = await getPersonalData();
+        setHasPersonalInfo(personalResult.hasPersonalInfo);
       } catch (error) {
-        console.error('Erro ao verificar informações de contato:', error);
+        console.error('Erro ao verificar informações do usuário:', error);
         setHasContactInfo(false);
+        setHasPersonalInfo(false);
       } finally {
-        setIsCheckingContact(false);
+        setIsCheckingInfo(false);
       }
     };
     
-    checkContactData();
+    checkUserData();
   }, [isAuthenticated]);
   
   // Manipular clique na imagem
@@ -81,11 +92,42 @@ export function ChatContainer() {
     setContactFormOpen(false);
   };
   
-  // Concluir cadastro de informações de contato
+  // Completar cadastro de informações de contato
   const completeContactForm = () => {
     setContactFormOpen(false);
     setHasContactInfo(true);
+    
+    // Se não tiver informações pessoais, abrir formulário automaticamente
+    if (!hasPersonalInfo) {
+      setShouldAutoOpenPersonalForm(true);
+    }
   };
+  
+  // Abrir formulário de informações pessoais
+  const openPersonalForm = () => {
+    setPersonalFormOpen(true);
+  };
+  
+  // Fechar formulário de informações pessoais
+  const closePersonalForm = () => {
+    setPersonalFormOpen(false);
+    setShouldAutoOpenPersonalForm(false);
+  };
+  
+  // Completar cadastro de informações pessoais
+  const completePersonalForm = () => {
+    setPersonalFormOpen(false);
+    setHasPersonalInfo(true);
+    setShouldAutoOpenPersonalForm(false);
+  };
+  
+  // Efeito para abrir o formulário de informações pessoais automaticamente
+  // após completar o formulário de contato
+  useEffect(() => {
+    if (shouldAutoOpenPersonalForm && hasContactInfo && !hasPersonalInfo) {
+      openPersonalForm();
+    }
+  }, [shouldAutoOpenPersonalForm, hasContactInfo, hasPersonalInfo]);
   
   // Configurar Intersection Observer para carregar mais mensagens automaticamente
   useEffect(() => {
@@ -116,7 +158,7 @@ export function ChatContainer() {
   }, [hasMoreMessages, isLoadingMore, loadMoreMessages, messages.length]);
   
   // Mostrar loading enquanto verifica a sessão
-  if (isLoading || isCheckingContact) {
+  if (isLoading || isCheckingInfo) {
     return <SessionLoading />;
   }
 
@@ -132,7 +174,7 @@ export function ChatContainer() {
         
         <CardContent className="p-0">
           {isAuthenticated ? (
-            hasContactInfo ? (
+            hasContactInfo && hasPersonalInfo ? (
               <motion.div 
                 ref={chatContainerRef}
                 className="h-[calc(100vh-590px)] sm:h-[calc(100vh-570px)] md:h-[calc(100vh-530px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
@@ -176,7 +218,7 @@ export function ChatContainer() {
                   </div>
                 )}
               </motion.div>
-            ) : (
+            ) : !hasContactInfo ? (
               // Tela para completar o cadastro com informações de contato
               <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
                 <FileText className="h-12 w-12 text-primary mb-4" />
@@ -184,6 +226,16 @@ export function ChatContainer() {
                 <p className="text-muted-foreground mb-6 max-w-md">{contactT('completeProfileDescription')}</p>
                 <Button onClick={openContactForm}>
                   {contactT('completeProfileButton')}
+                </Button>
+              </div>
+            ) : (
+              // Tela para completar o cadastro com informações pessoais
+              <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+                <FileText className="h-12 w-12 text-primary mb-4" />
+                <p className="text-xl font-semibold mb-2">{personalT('completeProfileRequired')}</p>
+                <p className="text-muted-foreground mb-6 max-w-md">{personalT('completeProfileDescription')}</p>
+                <Button onClick={openPersonalForm}>
+                  {personalT('completeProfileButton')}
                 </Button>
               </div>
             )
@@ -201,7 +253,7 @@ export function ChatContainer() {
           <ChatInput 
             onSendMessageAction={sendTextMessage} 
             onSendImageAction={sendImage}
-            isAuthenticated={isAuthenticated && !!hasContactInfo}
+            isAuthenticated={isAuthenticated && !!hasContactInfo && !!hasPersonalInfo}
           />
         </CardFooter>
       </Card>
@@ -217,6 +269,14 @@ export function ChatContainer() {
         isOpen={contactFormOpen}
         onCloseAction={closeContactForm}
         onCompleteAction={completeContactForm}
+        user={session?.user || null}
+      />
+      
+      {/* Modal de formulário de informações pessoais */}
+      <PersonalFormModal
+        isOpen={personalFormOpen}
+        onCloseAction={closePersonalForm}
+        onCompleteAction={completePersonalForm}
         user={session?.user || null}
       />
     </>
