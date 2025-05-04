@@ -414,6 +414,26 @@
         "title": "Perfil do Usuário",
         "description": "Informações do membro da comunidade"
       }
+    },
+    "contactForm": {
+      "title": "Informações de Contato",
+      "description": "Preencha suas informações de contato para usar o chat da comunidade",
+      "name": "Nome Completo",
+      "email": "E-mail",
+      "cpf": "CPF",
+      "skipCpf": "Não quero informar meu CPF",
+      "socialMedia": "Rede Social",
+      "socialMediaPlaceholder": "Selecione uma rede social",
+      "socialMediaContact": "Contato da rede social",
+      "save": "Salvar",
+      "saving": "Salvando...",
+      "cancel": "Cancelar",
+      "success": "Informações salvas com sucesso",
+      "error": "Erro ao salvar informações",
+      "validation_error": "Por favor, corrija os erros de validação",
+      "completeProfileRequired": "Complete seu perfil",
+      "completeProfileDescription": "Para participar do chat da comunidade, precisamos de algumas informações de contato",
+      "completeProfileButton": "Completar Perfil"
     }
   }
 } 

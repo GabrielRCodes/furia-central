@@ -446,6 +446,26 @@
         "title": "User Profile",
         "description": "Community member information"
       }
+    },
+    "contactForm": {
+      "title": "Contact Information",
+      "description": "Fill in your contact information to use the community chat",
+      "name": "Full Name",
+      "email": "Email",
+      "cpf": "CPF",
+      "skipCpf": "I don't want to provide my CPF",
+      "socialMedia": "Social Media",
+      "socialMediaPlaceholder": "Select a social media",
+      "socialMediaContact": "Social media contact",
+      "save": "Save",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "success": "Information saved successfully",
+      "error": "Error saving information",
+      "validation_error": "Please correct the validation errors",
+      "completeProfileRequired": "Complete your profile",
+      "completeProfileDescription": "To participate in the community chat, we need some contact information",
+      "completeProfileButton": "Complete Profile"
     }
   }
 } 

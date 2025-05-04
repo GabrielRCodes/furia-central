@@ -5,13 +5,17 @@ import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
 import { LoginButton } from '@/components/LoginButton';
-import { Loader2 } from 'lucide-react';
+import { Loader2, FileText } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
 
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { ImageModal } from './ImageModal';
+import { ContactFormModal } from './ContactFormModal';
 import { SessionLoading } from './SessionLoading';
 import { useChat } from '../hooks/useChat';
+import { getContactData } from '../actions';
 
 export function ChatContainer() {
   const { 
@@ -27,10 +31,35 @@ export function ChatContainer() {
     loadMoreMessages
   } = useChat();
   
+  const { data: session } = useSession();
   const t = useTranslations('Community.chat');
+  const contactT = useTranslations('Community.contactForm');
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const loadTriggerRef = useRef<HTMLDivElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [contactFormOpen, setContactFormOpen] = useState(false);
+  const [hasContactInfo, setHasContactInfo] = useState<boolean | null>(null);
+  const [isCheckingContact, setIsCheckingContact] = useState(true);
+  
+  // Verificar se o usuário tem informações de contato
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    
+    const checkContactData = async () => {
+      setIsCheckingContact(true);
+      try {
+        const result = await getContactData();
+        setHasContactInfo(result.hasContactInfo);
+      } catch (error) {
+        console.error('Erro ao verificar informações de contato:', error);
+        setHasContactInfo(false);
+      } finally {
+        setIsCheckingContact(false);
+      }
+    };
+    
+    checkContactData();
+  }, [isAuthenticated]);
   
   // Manipular clique na imagem
   const handleImageClick = (imageUrl: string) => {
@@ -40,6 +69,22 @@ export function ChatContainer() {
   // Fechar modal de imagem
   const closeImageModal = () => {
     setSelectedImage(null);
+  };
+  
+  // Abrir formulário de contato
+  const openContactForm = () => {
+    setContactFormOpen(true);
+  };
+  
+  // Fechar formulário de contato
+  const closeContactForm = () => {
+    setContactFormOpen(false);
+  };
+  
+  // Concluir cadastro de informações de contato
+  const completeContactForm = () => {
+    setContactFormOpen(false);
+    setHasContactInfo(true);
   };
   
   // Configurar Intersection Observer para carregar mais mensagens automaticamente
@@ -71,7 +116,7 @@ export function ChatContainer() {
   }, [hasMoreMessages, isLoadingMore, loadMoreMessages, messages.length]);
   
   // Mostrar loading enquanto verifica a sessão
-  if (isLoading) {
+  if (isLoading || isCheckingContact) {
     return <SessionLoading />;
   }
 
@@ -87,50 +132,63 @@ export function ChatContainer() {
         
         <CardContent className="p-0">
           {isAuthenticated ? (
-            <motion.div 
-              ref={chatContainerRef}
-              className="h-[calc(100vh-590px)] sm:h-[calc(100vh-570px)] md:h-[calc(100vh-530px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
-            >
-              {/* Div invisível para rolar para o final - altura garantida */}
-              <div ref={messagesEndRef} className="h-1 w-full" aria-hidden="true" />
-              
-              {messages.length === 0 && (
-                <div className="flex items-center justify-center h-full">
-                  {/* <p className="text-muted-foreground">{t('noMessages')}</p> */}
-                </div>
-              )}
-              
-              {error && (
-                <div className="flex items-center justify-center p-4 text-destructive">
-                  <p>{error}</p>
-                </div>
-              )}
-              
-              {/* Mensagens exibidas com as mais recentes embaixo */}
-              {messages.map((message) => (
-                <ChatMessage
-                  key={message.id}
-                  message={message}
-                  onImageClickAction={handleImageClick}
-                />
-              ))}
-              
-              {/* Elemento observável para carregar mais mensagens automaticamente */}
-              {hasMoreMessages && (
-                <div 
-                  ref={loadTriggerRef} 
-                  className="flex justify-center py-3 mt-4 h-5"
-                >
-                  {isLoadingMore && (
-                    <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      <span>{t('loading')}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </motion.div>
+            hasContactInfo ? (
+              <motion.div 
+                ref={chatContainerRef}
+                className="h-[calc(100vh-590px)] sm:h-[calc(100vh-570px)] md:h-[calc(100vh-530px)] overflow-y-auto bg-secondary/10 p-4 flex flex-col-reverse space-y-reverse space-y-4 overflow-x-hidden"
+              >
+                {/* Div invisível para rolar para o final - altura garantida */}
+                <div ref={messagesEndRef} className="h-1 w-full" aria-hidden="true" />
+                
+                {messages.length === 0 && (
+                  <div className="flex items-center justify-center h-full">
+                    {/* <p className="text-muted-foreground">{t('noMessages')}</p> */}
+                  </div>
+                )}
+                
+                {error && (
+                  <div className="flex items-center justify-center p-4 text-destructive">
+                    <p>{error}</p>
+                  </div>
+                )}
+                
+                {/* Mensagens exibidas com as mais recentes embaixo */}
+                {messages.map((message) => (
+                  <ChatMessage
+                    key={message.id}
+                    message={message}
+                    onImageClickAction={handleImageClick}
+                  />
+                ))}
+                
+                {/* Elemento observável para carregar mais mensagens automaticamente */}
+                {hasMoreMessages && (
+                  <div 
+                    ref={loadTriggerRef} 
+                    className="flex justify-center py-3 mt-4 h-5"
+                  >
+                    {isLoadingMore && (
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        <span>{t('loading')}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              // Tela para completar o cadastro com informações de contato
+              <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
+                <FileText className="h-12 w-12 text-primary mb-4" />
+                <p className="text-xl font-semibold mb-2">{contactT('completeProfileRequired')}</p>
+                <p className="text-muted-foreground mb-6 max-w-md">{contactT('completeProfileDescription')}</p>
+                <Button onClick={openContactForm}>
+                  {contactT('completeProfileButton')}
+                </Button>
+              </div>
+            )
           ) : (
+            // Tela para usuário não logado
             <div className="h-[calc(100vh-550px)] md:h-[calc(100vh-500px)] bg-secondary/10 flex flex-col items-center justify-center p-6 text-center">
               <p className="text-xl font-semibold mb-2">{t('loginRequired')}</p>
               <p className="text-muted-foreground mb-6">{t('loginDescription')}</p>
@@ -143,14 +201,23 @@ export function ChatContainer() {
           <ChatInput 
             onSendMessageAction={sendTextMessage} 
             onSendImageAction={sendImage}
-            isAuthenticated={isAuthenticated}
+            isAuthenticated={isAuthenticated && !!hasContactInfo}
           />
         </CardFooter>
       </Card>
 
+      {/* Modal de imagem */}
       <ImageModal 
         imageUrl={selectedImage} 
         onCloseAction={closeImageModal} 
+      />
+      
+      {/* Modal de formulário de contacto */}
+      <ContactFormModal
+        isOpen={contactFormOpen}
+        onCloseAction={closeContactForm}
+        onCompleteAction={completeContactForm}
+        user={session?.user || null}
       />
     </>
   );
