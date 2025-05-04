@@ -48,6 +48,7 @@ model User {
   points Int @default(0)
   accounts      Account[]
   contactInfos  ContactInfos?
+  personalInfos PersonalInfos?
   sessions      Session[]
   shareLinks    ShareLink[]
   chatMessages  ChatMessage[]
@@ -111,6 +112,25 @@ model ChatMessage {
   type      String   @default("text") // "text" ou "image"
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PersonalInfos {
+  id          String   @id @default(cuid())
+  age         Int?
+  hasBuyed    Boolean  @default(false)
+  isCrowd     Boolean  @default(false)
+  address     String?
+  state       String?
+  zipCode     String?
+  interests   String?
+  twitter     String?
+  twitch      String?
+  instagram   String?
+  createdAt   DateTime @default(now())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
