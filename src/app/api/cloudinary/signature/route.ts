@@ -7,7 +7,7 @@ export async function GET() {
     // Verificar se o usuário está autenticado
     const session = await auth();
     
-    if (!session || !session.user) {
+    if (!session) {
       return new NextResponse(
         JSON.stringify({ error: 'Não autorizado' }),
         { status: 401 }

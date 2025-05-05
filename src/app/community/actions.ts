@@ -401,12 +401,28 @@ export async function getUserProfileData() {
 // Server action que lida diretamente com o upload de imagens, sem usar API routes
 export async function uploadImageToCloudinary(file: File): Promise<string> {
   try {
+    console.log('Iniciando upload para Cloudinary:', {
+      name: file.name,
+      type: file.type,
+      size: file.size
+    });
+    
     // Transformar o arquivo em um buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
+    console.log('Buffer criado com sucesso. Tamanho:', buffer.length);
+    
     // Gerar um timestamp e uma assinatura
     const timestamp = Math.round(new Date().getTime() / 1000);
+    
+    // Verificar configuração do Cloudinary
+    console.log('Configuração Cloudinary:', {
+      hasCloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
+      hasApiKey: !!process.env.CLOUDINARY_API_KEY,
+      hasApiSecret: !!process.env.CLOUDINARY_API_SECRET,
+      timestamp
+    });
     
     // Fazer o upload diretamente via API do cloudinary no servidor
     return new Promise((resolve, reject) => {
@@ -421,6 +437,11 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
             console.error('Erro no upload do Cloudinary:', error);
             reject(new Error('Falha no upload da imagem para o Cloudinary'));
           } else if (result) {
+            console.log('Upload concluído com sucesso:', {
+              url: result.secure_url,
+              format: result.format,
+              bytes: result.bytes
+            });
             resolve(result.secure_url);
           } else {
             reject(new Error('Resposta inválida do Cloudinary'));
@@ -445,12 +466,14 @@ export async function updateUserProfile(formData: FormData) {
   // Extrair dados do formulário
   const name = formData.get("name") as string
   const imageFile = formData.get("image") as File | null
+  const imageUrl = formData.get("imageUrl") as string | null
   
   console.log("Dados recebidos:", { 
     name, 
     hasImage: !!imageFile,
     imageSize: imageFile ? imageFile.size : 0,
-    imageType: imageFile ? imageFile.type : 'nenhum'
+    imageType: imageFile ? imageFile.type : 'nenhum',
+    hasImageUrl: !!imageUrl
   })
   
   // Validar nome
@@ -475,35 +498,44 @@ export async function updateUserProfile(formData: FormData) {
     }
     
     // Verificar se o cliente enviou uma imagem (se ainda não tiver)
-    let imageUrl = session.user.image || null
+    // Priorizar uma URL direta do Cloudinary se fornecida
+    let finalImageUrl = session.user.image || null
     
-    if (!profileResult.hasImage && imageFile && imageFile.size > 0) {
-      try {
-        console.log("Iniciando upload da imagem...")
-        
-        // Usar a nova função de upload direto
-        imageUrl = await uploadImageToCloudinary(imageFile);
-        
-        console.log("Upload concluído:", { imageUrl })
-        
-        if (!imageUrl) {
+    if (!profileResult.hasImage) {
+      // Se temos uma URL de imagem já enviada para o Cloudinary
+      if (imageUrl) {
+        console.log("Usando URL de imagem fornecida:", imageUrl)
+        finalImageUrl = imageUrl
+      }
+      // Caso contrário, tentar fazer upload do arquivo se presente
+      else if (imageFile && imageFile.size > 0) {
+        try {
+          console.log("Iniciando upload da imagem...")
+          
+          // Usar a função de upload direto
+          finalImageUrl = await uploadImageToCloudinary(imageFile);
+          
+          console.log("Upload concluído:", { imageUrl: finalImageUrl })
+          
+          if (!finalImageUrl) {
+            return { 
+              success: false, 
+              message: "Falha ao fazer upload da imagem" 
+            }
+          }
+        } catch (error) {
+          console.error("Erro ao fazer upload da imagem:", error)
           return { 
             success: false, 
-            message: "Falha ao fazer upload da imagem" 
+            message: `Erro ao fazer upload da imagem: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
           }
         }
-      } catch (error) {
-        console.error("Erro ao fazer upload da imagem:", error)
+      } else if (!finalImageUrl) {
         return { 
           success: false, 
-          message: `Erro ao fazer upload da imagem: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+          message: "Avatar é obrigatório", 
+          errors: [{ path: "image", message: "Avatar é obrigatório" }]
         }
-      }
-    } else if (!profileResult.hasImage && (!imageFile || imageFile.size === 0)) {
-      return { 
-        success: false, 
-        message: "Avatar é obrigatório", 
-        errors: [{ path: "image", message: "Avatar é obrigatório" }]
       }
     }
     
@@ -514,7 +546,7 @@ export async function updateUserProfile(formData: FormData) {
       },
       data: {
         name,
-        image: imageUrl
+        image: finalImageUrl
       }
     })
     

@@ -24,7 +24,7 @@ export async function purchaseProduct({
     // Verificar se o usuário está autenticado
     const session = await auth()
     
-    if (!session || !session.user?.id || !session.user?.email || !session.user?.name) {
+    if (!session || !session.user?.id || !session.user?.email) {
       return {
         status: 401,
         message: "Você precisa estar logado para realizar compras."
@@ -32,7 +32,7 @@ export async function purchaseProduct({
     }
 
     const userId = String(session.user.id)
-    const userName = session.user.name
+    const userName = session.user.name || 'Usuário'
 
     // Verificar cooldown de 3 minutos usando o CacheIDManager
     const cacheResult = await CacheIDManager({
@@ -88,6 +88,9 @@ export async function purchaseProduct({
 
     if (webhookUrl) {
       try {
+        // Usar o nome do banco de dados se disponível, senão usar o nome da sessão ou fallback
+        const displayName = user.name || userName
+
         await fetch(webhookUrl, {
           method: 'POST',
           headers: {
@@ -98,7 +101,7 @@ export async function purchaseProduct({
             embeds: [
               {
                 title: `🛒 Nova Compra: ${productName}`,
-                description: `**Usuário:** ${userName}\n**Valor:** ${productPoints} pontos\n**Saldo após compra:** ${user.points - productPoints} pontos\n\n**Informações de contato:**\n${contactInfo}`,
+                description: `**Usuário:** ${displayName}\n**Valor:** ${productPoints} pontos\n**Saldo após compra:** ${user.points - productPoints} pontos\n\n**Informações de contato:**\n${contactInfo}`,
                 color: 0x2ecc71,
                 thumbnail: {
                   url: productImage

@@ -513,7 +513,10 @@
       "completeProfileButton": "Complete profile",
       "previewTitle": "Image Preview",
       "confirmButton": "Confirm image",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "uploading": "Uploading...",
+      "uploadError": "Error uploading image. Please try again.",
+      "imageUploaded": "Image uploaded successfully"
     }
   }
 } 

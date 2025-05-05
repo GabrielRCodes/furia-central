@@ -500,7 +500,10 @@
       "completeProfileButton": "Completar perfil",
       "previewTitle": "Visualização da imagem",
       "confirmButton": "Confirmar imagem",
-      "cancelButton": "Cancelar"
+      "cancelButton": "Cancelar",
+      "uploading": "Enviando...",
+      "uploadError": "Erro ao fazer upload da imagem. Tente novamente.",
+      "imageUploaded": "Imagem enviada com sucesso"
     }
   }
 } 

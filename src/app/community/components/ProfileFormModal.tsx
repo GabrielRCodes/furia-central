@@ -18,6 +18,48 @@ import { FiUser, FiSave, FiLoader, FiCamera } from 'react-icons/fi';
 import { updateUserProfile } from '../actions';
 import Image from 'next/image';
 
+// Função auxiliar para fazer upload de imagem via API do Cloudinary
+const uploadImageToCloudinary = async (file: File): Promise<string> => {
+  try {
+    // Obter a assinatura do servidor
+    const signatureResponse = await fetch('/api/cloudinary/signature');
+    
+    if (!signatureResponse.ok) {
+      throw new Error('Falha ao obter assinatura para upload');
+    }
+    
+    const { signature, timestamp, apiKey, cloudName, folder } = await signatureResponse.json();
+    
+    // Criar o formulário para upload
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('api_key', apiKey);
+    formData.append('timestamp', timestamp.toString());
+    formData.append('signature', signature);
+    formData.append('folder', folder); // Usar o folder fornecido pelo servidor
+    formData.append('transformation', 'f_auto,q_auto');
+    
+    // Fazer o upload
+    const uploadResponse = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+    
+    if (!uploadResponse.ok) {
+      throw new Error('Falha no upload da imagem');
+    }
+    
+    const uploadResult = await uploadResponse.json();
+    return uploadResult.secure_url;
+  } catch (error) {
+    console.error('Erro no upload:', error);
+    throw error;
+  }
+};
+
 interface ProfileFormModalProps {
   isOpen: boolean;
   onCloseAction: () => void;
@@ -50,9 +92,11 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
   // Estado para preview da imagem
   const [imagePreview, setImagePreview] = useState<string | null>(user?.image || null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   
   // Estado para confirmação de imagem
   const [showImagePreview, setShowImagePreview] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   
   // Manipulador de mudança de nome
   const handleNameChange = (value: string) => {
@@ -118,9 +162,28 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
     }
   };
   
-  // Confirmar imagem selecionada
-  const confirmImage = () => {
-    setShowImagePreview(false);
+  // Confirmar imagem selecionada e fazer upload para Cloudinary
+  const confirmImage = async () => {
+    if (!imageFile) {
+      setShowImagePreview(false);
+      return;
+    }
+    
+    setIsUploadingImage(true);
+    
+    try {
+      // Fazer upload diretamente para o Cloudinary antes de fechar o modal
+      const imageUrl = await uploadImageToCloudinary(imageFile);
+      setUploadedImageUrl(imageUrl);
+      
+      // Manter o URL de preview local para exibição
+      setShowImagePreview(false);
+    } catch (error) {
+      console.error('Erro ao fazer upload da imagem:', error);
+      toast.error(t('uploadError') || 'Erro ao fazer upload da imagem. Tente novamente.');
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
   
   // Limpar recursos quando o componente é desmontado
@@ -144,7 +207,8 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
       validationErrors.name = t('nameRequired') || 'Nome deve ter pelo menos 3 caracteres';
     }
     
-    if (!imagePreview && !imageFile) {
+    // Verificar se temos uma imagem (seja via upload prévio ou imageFile)
+    if (!uploadedImageUrl && !imageFile && !user?.image) {
       validationErrors.image = t('imageRequired') || 'Avatar é obrigatório';
     }
     
@@ -160,21 +224,14 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       
-      // Verificar se temos um arquivo de imagem
-      if (imageFile) {
-        console.log('Anexando imagem ao formulário:', {
-          name: imageFile.name,
-          type: imageFile.type,
-          size: imageFile.size
-        });
+      // Se já temos uma URL de imagem do Cloudinary, usamos ela diretamente
+      if (uploadedImageUrl) {
+        formDataToSend.append('imageUrl', uploadedImageUrl);
+      }
+      // Caso contrário, se há um arquivo, precisamos enviá-lo para o servidor
+      else if (imageFile) {
         formDataToSend.append('image', imageFile);
       }
-      
-      // Mostrar dados que serão enviados
-      console.log('Enviando formulário com:', {
-        name: formData.name,
-        hasImage: !!imageFile
-      });
       
       // Inicia o estado de salvando
       setIsSaving(true);
@@ -235,8 +292,8 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
               <div className="flex flex-col items-center space-y-4">
                 <div className="relative">
                   <Avatar className="h-24 w-24 bg-muted">
-                    {imagePreview ? (
-                      <AvatarImage src={imagePreview} alt="Preview" />
+                    {(uploadedImageUrl || imagePreview) ? (
+                      <AvatarImage src={uploadedImageUrl || imagePreview || ''} alt="Preview" />
                     ) : (
                       <AvatarFallback>
                         <FiUser className="h-12 w-12 text-muted-foreground" />
@@ -262,7 +319,9 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
                   onChange={handleFileChange}
                 />
                 <span className="text-sm text-muted-foreground">
-                  {t('clickToUpload') || 'Clique para enviar uma foto'}
+                  {uploadedImageUrl 
+                    ? (t('imageUploaded') || 'Imagem enviada com sucesso')
+                    : (t('clickToUpload') || 'Clique para enviar uma foto')}
                 </span>
                 {errors.image && <p className="text-destructive text-xs">{errors.image}</p>}
               </div>
@@ -336,11 +395,23 @@ export function ProfileFormModal({ isOpen, onCloseAction, onCompleteAction, user
                     fileInputRef.current.value = '';
                   }
                 }}
+                disabled={isUploadingImage}
               >
                 {t('cancelButton') || 'Cancelar'}
               </Button>
-              <Button type="button" onClick={confirmImage}>
-                {t('confirmButton') || 'Confirmar imagem'}
+              <Button 
+                type="button" 
+                onClick={confirmImage}
+                disabled={isUploadingImage}
+              >
+                {isUploadingImage ? (
+                  <>
+                    <FiLoader className="mr-2 h-4 w-4 animate-spin" />
+                    {t('uploading') || 'Enviando...'}
+                  </>
+                ) : (
+                  t('confirmButton') || 'Confirmar imagem'
+                )}
               </Button>
             </div>
           </DialogContent>
