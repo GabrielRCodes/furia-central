@@ -309,6 +309,25 @@
       "validation_error": "Please correct the validation errors",
       "cooldown": "You need to wait 1 day between updates"
     },
+    "personal": {
+      "title": "Personal Information",
+      "description": "Add or update your personal information",
+      "age": "Age",
+      "address": "Address",
+      "state": "State",
+      "zipCode": "ZIP Code",
+      "interests": "Interests",
+      "interestsPlaceholder": "Type your interests separated by comma",
+      "twitter": "Twitter/X",
+      "twitch": "Twitch",
+      "instagram": "Instagram",
+      "save": "Save Information",
+      "saving": "Saving...",
+      "success": "Personal information saved successfully",
+      "error": "Error saving information",
+      "validation_error": "Please correct the validation errors",
+      "cooldown": "You need to wait 1 day between updates"
+    },
     "delete": {
       "title": "Delete account",
       "description": "Permanently remove your account and all associated data",
